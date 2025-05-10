@@ -1,5 +1,6 @@
 package ady_trans_jaya.kotlin
 
+import ady_trans_jaya.kotlin.navigation.AppNavigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,9 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import ady_trans_jaya.kotlin.ui.theme.AdytransjayakotlinTheme
-import androidx.annotation.InspectableProperty
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AdytransjayakotlinTheme {
-              HelloWorld()
+              Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> AppNavigation(modifier = Modifier.padding(innerPadding)) }
                 }
             }
         }
