@@ -1,5 +1,5 @@
-package ady.trans.jaya.ui.screen
-
+package adytransjaya.ui.screen
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,17 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
+@SuppressLint("ComposableNaming")
 @Composable
-fun homeScreen(navController: NavController) {
+fun detailScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Ini Home Screen")
+        Text(text = "This is detail screen")
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate("detail") }) {
-            Text(text = "Go to Detail!")
+        Button(onClick = { navController.navigate("home") }) {
+            Text(text = "Go Back")
         }
     }
 }
