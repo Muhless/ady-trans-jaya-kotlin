@@ -1,8 +1,11 @@
 package adytransjaya
 
 import adytransjaya.ui.navigation.bottomBar
+import adytransjaya.ui.screen.deliveryScreen
 import adytransjaya.ui.screen.detailScreen
+import adytransjaya.ui.screen.historyScreen
 import adytransjaya.ui.screen.homeScreen
+import adytransjaya.ui.screen.profileScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,8 +22,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             Scaffold(bottomBar = { bottomBar(navController) }) { innerPadding ->
-                NavHost(navController = navController, startDestination = "home", modifier = Modifier.padding(innerPadding)) {
+                NavHost(
+                    navController = navController,
+                    startDestination = "home",
+                    modifier =
+                        Modifier.padding(innerPadding),
+                ) {
                     composable("home") { homeScreen(navController) }
+                    composable("delivery") { deliveryScreen(navController) }
+                    composable("profile") { profileScreen(navController) }
+                    composable("history") { historyScreen(navController) }
                     composable("detail") { detailScreen(navController) }
                 }
             }
