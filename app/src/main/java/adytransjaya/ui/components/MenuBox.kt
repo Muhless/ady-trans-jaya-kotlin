@@ -18,7 +18,7 @@ fun menuBox(modifier: Modifier = Modifier) {
             modifier
                 .height(200.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .background(Color(0xFFBBDEFB)),
+                .background(Color.White),
     ) {
         Text(text = "Ini box")
     }

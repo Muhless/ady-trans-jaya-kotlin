@@ -2,9 +2,10 @@ package adytransjaya.ui.screen
 
 import ady_trans_jaya.kotlin.R
 import adytransjaya.ui.components.menuCard
-import android.annotation.SuppressLint
-import android.media.Image
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,8 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.HelpOutline
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.Person
@@ -22,6 +24,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -30,31 +34,56 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-@SuppressLint("ComposableNaming")
 @Composable
 fun homeScreen(navController: NavController) {
     Column(modifier = Modifier.padding(30.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = "Halo,", fontSize = 20.sp)
+                Text(
+                    text = "Halo,",
+                    fontSize = 18.sp,
+                    color = Color.Gray,
+                )
                 Text(
                     text = "Driver",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 40.sp,
+                    fontSize = 36.sp,
                     fontFamily = FontFamily.Cursive,
+                    color = Color(0xFF1976D2),
                 )
             }
             Image(
                 painter = painterResource(id = R.drawable.profile_picture),
                 contentDescription = "Profile Picture",
-                modifier = Modifier.size(40.dp),
-                contentScale = ContentScale.Fit,
+                modifier =
+                    Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color.LightGray, CircleShape),
+                contentScale = ContentScale.Crop,
             )
         }
-// TOP
+        Spacer(modifier = Modifier.weight(1f))
+
+//        TODO: if "delivery" != false
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(30.dp)
+                    .background(Color.White),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(text = "anda belum memiliki tugas pengiriman")
+        }
+
         Spacer(modifier = Modifier.weight(1f))
 
         Column {
@@ -62,7 +91,6 @@ fun homeScreen(navController: NavController) {
                 menuCard(
                     icon = Icons.Default.LocalShipping,
                     title = "Pengiriman",
-                    subtitle = "Tugas pengiriman hari",
                     onClick = { navController.navigate("delivery") },
                     modifier = Modifier.weight(1f),
                 )
@@ -70,7 +98,6 @@ fun homeScreen(navController: NavController) {
                 menuCard(
                     icon = Icons.Default.History,
                     title = "Riwayat",
-                    subtitle = "Riwayat pengiriman",
                     onClick = { navController.navigate("history") },
                     modifier = Modifier.weight(1f),
                 )
@@ -82,15 +109,13 @@ fun homeScreen(navController: NavController) {
                 menuCard(
                     icon = Icons.Default.Person,
                     title = "Profile",
-                    subtitle = "Informasi driver",
                     onClick = { navController.navigate("profile") },
                     modifier = Modifier.weight(1f),
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 menuCard(
-                    icon = Icons.Default.HelpOutline,
+                    icon = Icons.AutoMirrored.Filled.Help,
                     title = "Bantuan",
-                    subtitle = "Bantuan",
                     onClick = { navController.navigate("help") },
                     modifier = Modifier.weight(1f),
                 )

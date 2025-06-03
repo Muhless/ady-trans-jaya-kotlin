@@ -1,10 +1,24 @@
 package adytransjaya.ui.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -21,19 +35,43 @@ fun bottomBar(navController: NavController) {
             BottomNavItem.Profile,
         )
 
-    NavigationBar {
+    NavigationBar(
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp, vertical = 4.dp)
+                .height(50.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFFF5F5F5)),
+        containerColor = Color.Transparent,
+        tonalElevation = 4.dp,
+    ) {
         items.forEach { item ->
+            val selected = currentRoute == item.route
             NavigationBarItem(
-                selected = currentRoute == item.route,
+                selected = selected,
                 onClick = {
-                    if (currentRoute !=
-                        item.route
-                    ) {
-                        navController.navigate(item.route)
+                    if (!selected) navController.navigate(item.route)
+                },
+                icon = {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.label,
+                            modifier = Modifier.size(20.dp),
+                            tint = if (selected) Color(0xFFDC2626) else Color(0xFF9CA3AF),
+                        )
+                        Spacer(modifier = Modifier.height(2.dp)) // spasi kecil
+                        Text(
+                            text = item.label,
+                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            color = if (selected) Color(0xFFDC2626) else Color(0xFF9CA3AF),
+                        )
                     }
                 },
-                icon = { Icon(imageVector = item.icon, contentDescription = item.label) },
-                label = { Text(item.label) },
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        indicatorColor = Color.Transparent,
+                    ),
             )
         }
     }
