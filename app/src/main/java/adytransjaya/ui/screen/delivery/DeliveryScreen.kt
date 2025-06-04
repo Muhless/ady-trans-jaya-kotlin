@@ -1,6 +1,5 @@
-package adytransjaya.ui.screen
+package adytransjaya.ui.screen.delivery
 
-import adytransjaya.ui.components.card.deliveryCard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -26,8 +25,8 @@ fun deliveryScreen(navController: NavController) {
                         top = 30.dp,
                         start = 20.dp,
                         end = 20.dp,
+                        bottom = 20.dp,
                     ),
         )
-        deliveryCard()
     }
 }

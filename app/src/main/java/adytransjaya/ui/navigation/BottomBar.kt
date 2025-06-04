@@ -41,7 +41,7 @@ fun bottomBar(navController: NavController) {
                 .padding(horizontal = 16.dp, vertical = 4.dp)
                 .height(50.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xFFF5F5F5)),
+                .background(Color.White),
         containerColor = Color.Transparent,
         tonalElevation = 4.dp,
     ) {
