@@ -1,4 +1,4 @@
-package adytransjaya.ui.components
+package adytransjaya.ui.components.card
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

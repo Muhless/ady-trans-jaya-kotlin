@@ -1,11 +1,10 @@
 package adytransjaya.ui.screen
 
 import ady_trans_jaya.kotlin.R
-import adytransjaya.ui.components.menuCard
+import adytransjaya.ui.components.card.deliveryTaskCard
+import adytransjaya.ui.components.card.menuCard
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,15 +35,23 @@ import androidx.navigation.NavController
 
 @Composable
 fun homeScreen(navController: NavController) {
-    Column(modifier = Modifier.padding(30.dp)) {
+    Column {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 20.dp,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier =
+                    Modifier
+                        .weight(1f),
+            ) {
                 Text(
                     text = "Halo,",
                     fontSize = 18.sp,
@@ -69,24 +76,14 @@ fun homeScreen(navController: NavController) {
                 contentScale = ContentScale.Crop,
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
 
-//        TODO: if "delivery" != false
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(30.dp)
-                    .background(Color.White),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(text = "anda belum memiliki tugas pengiriman")
-        }
+        Spacer(modifier = Modifier.height(20.dp))
 
-        Spacer(modifier = Modifier.weight(1f))
+        deliveryTaskCard()
 
-        Column {
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 menuCard(
                     icon = Icons.Default.LocalShipping,
