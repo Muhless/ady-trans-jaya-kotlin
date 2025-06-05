@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "ady_trans_jaya.kotlin"
+    namespace = "com.adytransjaya"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "ady_trans_jaya.kotlin"
+        applicationId = "com.adytransjaya"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -59,4 +59,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.compose.animation:animation-graphics:1.8.2")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }
