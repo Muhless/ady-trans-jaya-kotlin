@@ -1,5 +1,7 @@
 package adytransjaya.ui.screen.delivery
 
+import adytransjaya.ui.components.card.delivery.deliveryDetailCard
+import adytransjaya.ui.components.card.titleCard
 import adytransjaya.ui.theme.AppColors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,16 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Circle
-import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Receipt
-import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.filled.TaskAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -37,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -108,84 +102,11 @@ fun deliveryDetailScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                ) {
-                    Text(
-                        text = "Detail Pengiriman",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = AppColors.NeutralText,
-                    )
-                }
-            }
+            titleCard(title = "Detail Pengiriman")
         }
 
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp),
-                ) {
-                    Text(
-                        text = "Informasi Pengiriman",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color(0xFF2C3E50),
-                        modifier = Modifier.padding(bottom = 16.dp),
-                    )
-
-                    infoRow(
-                        icon = Icons.Default.Receipt,
-                        label = "Kode Invoice",
-                        value = "INV-20250604",
-                    )
-                    infoRow(
-                        icon = Icons.Default.Person,
-                        label = "Pelanggan",
-                        value = "Toko Berkah Jaya",
-                    )
-                    infoRow(
-                        icon = Icons.Default.Phone,
-                        label = "No. Telepon",
-                        value = "+62 812-3456-7890",
-                    )
-                    infoRow(
-                        icon = Icons.Default.LocalShipping,
-                        label = "Kendaraan",
-                        value = "Toyota Pickup",
-                    )
-                    infoRow(
-                        icon = Icons.Default.LocationOn,
-                        label = "Alamat Pengiriman",
-                        value = "Jl. Raya Bogor No. 123, Jakarta Timur",
-                    )
-                    infoRow(
-                        icon = Icons.Default.LocationOn,
-                        label = "Alamat Tujuan",
-                        value = "Jl. Raya Bogor No. 123, Jakarta Timur",
-                    )
-
-                    infoRow(
-                        icon = Icons.Default.Schedule,
-                        label = "Estimasi",
-                        value = "3 Juni 2025, 15:00 WIB",
-                    )
-                    infoRow(
-                        icon = Icons.Default.TaskAlt,
-                        label = "Status",
-                        value = "Selesai",
-                    )
-                }
-            }
+            deliveryDetailCard()
         }
 
         // Daftar Barang
@@ -245,7 +166,8 @@ fun deliveryDetailScreen(navController: NavController) {
                                 .background(
                                     Color(0xFFF8F9FA),
                                     RoundedCornerShape(8.dp),
-                                ).padding(12.dp),
+                                )
+                                .padding(12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
@@ -270,55 +192,19 @@ fun deliveryDetailScreen(navController: NavController) {
                     Modifier
                         .fillMaxWidth(),
                 colors =
-                    ButtonDefaults.outlinedButtonColors(
+                    ButtonDefaults.buttonColors(
                         containerColor = AppColors.BrandBlue,
                         contentColor = Color.White,
                     ),
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Kembali")
             }
-        }
-    }
-}
-
-@Composable
-private fun infoRow(
-    icon: ImageVector,
-    label: String,
-    value: String,
-) {
-    Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = Color(0xFF6C757D),
-            modifier = Modifier.size(20.dp),
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = label,
-                fontSize = 12.sp,
-                color = Color(0xFF6C757D),
-            )
-            Text(
-                text = value,
-                fontSize = 14.sp,
-                color = Color(0xFF2C3E50),
-                fontWeight = FontWeight.Medium,
-            )
         }
     }
 }

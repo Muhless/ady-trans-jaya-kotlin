@@ -32,7 +32,7 @@ fun deliveryTaskCard() {
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 30.dp)
                 .height(170.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .shadow(1.dp),

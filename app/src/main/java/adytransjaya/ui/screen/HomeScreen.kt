@@ -41,8 +41,8 @@ fun homeScreen(navController: NavController) {
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 20.dp,
-                        end = 20.dp,
+                        start = 30.dp,
+                        end = 30.dp,
                         top = 30.dp,
                     ),
             verticalAlignment = Alignment.CenterVertically,
@@ -83,7 +83,7 @@ fun homeScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 30.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 menuCard(
                     icon = Icons.Default.LocalShipping,

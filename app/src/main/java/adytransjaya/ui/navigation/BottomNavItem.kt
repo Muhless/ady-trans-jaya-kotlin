@@ -18,5 +18,5 @@ sealed class BottomNavItem(
 
     object History : BottomNavItem("history", "Riwayat", Icons.Default.History)
 
-    object Profile : BottomNavItem("detail", "Detail", Icons.Default.Person)
+    object Profile : BottomNavItem("profile", "Profil", Icons.Default.Person)
 }

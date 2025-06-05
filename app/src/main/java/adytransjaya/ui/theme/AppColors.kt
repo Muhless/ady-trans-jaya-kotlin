@@ -14,5 +14,4 @@ object AppColors {
     val NeutralBackground = Color(0xFFF9FAFB)
     val NeutralText = Color(0xFF374151)
     val BorderGray = Color(0xFFD1D5DB)
-    val CardBackground = Color.White
 }

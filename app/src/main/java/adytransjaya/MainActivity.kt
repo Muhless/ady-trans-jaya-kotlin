@@ -4,7 +4,6 @@ import adytransjaya.ui.components.splashScreen
 import adytransjaya.ui.navigation.bottomBar
 import adytransjaya.ui.screen.delivery.deliveryDetailScreen
 import adytransjaya.ui.screen.delivery.deliveryScreen
-import adytransjaya.ui.screen.detailScreen
 import adytransjaya.ui.screen.helpScreen
 import adytransjaya.ui.screen.historyScreen
 import adytransjaya.ui.screen.homeScreen
@@ -48,7 +47,6 @@ class MainActivity : ComponentActivity() {
                     composable("delivery_detail") { deliveryDetailScreen(navController) }
                     composable("profile") { profileScreen(navController) }
                     composable("history") { historyScreen(navController) }
-                    composable("detail") { detailScreen(navController) }
                     composable("help") { helpScreen(navController) }
                 }
             }
