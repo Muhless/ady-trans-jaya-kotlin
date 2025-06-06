@@ -12,12 +12,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.adytransjaya.ui.components.splashScreen
 import com.adytransjaya.ui.navigation.bottomBar
-import com.adytransjaya.ui.screen.LoginScreen
 import com.adytransjaya.ui.screen.delivery.deliveryDetailScreen
 import com.adytransjaya.ui.screen.delivery.deliveryScreen
 import com.adytransjaya.ui.screen.helpScreen
 import com.adytransjaya.ui.screen.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
+import com.adytransjaya.ui.screen.login.loginScreen
 import com.adytransjaya.ui.screen.profileScreen
 import com.adytransjaya.ui.theme.AppColors
 
@@ -39,17 +39,11 @@ class MainActivity : ComponentActivity() {
             ) { innerPadding ->
                 NavHost(
                     navController = navController,
-                    startDestination = "login",
+                    startDestination = "splash",
                     modifier = Modifier.padding(innerPadding),
                 ) {
-                    composable("login") {
-                        LoginScreen(onLoginSuccess = {
-                            navController.navigate("home") {
-                                popUpTo("login") { inclusive = true }
-                            }
-                        })
-                    }
                     composable("splash") { splashScreen(navController) }
+                    composable("login") { loginScreen(navController) }
                     composable("home") { homeScreen(navController) }
                     composable("delivery") { deliveryScreen(navController) }
                     composable("delivery_detail") { deliveryDetailScreen(navController) }

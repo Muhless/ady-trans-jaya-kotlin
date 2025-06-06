@@ -20,7 +20,7 @@ import kotlinx.coroutines.delay
 fun splashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         delay(2000)
-        navController.navigate("home") {
+        navController.navigate("login") {
             popUpTo("splash") { inclusive = true }
         }
     }
@@ -35,7 +35,7 @@ fun splashScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Animated Splash",
-            modifier = Modifier.size(200.dp),
+            modifier = Modifier.size(150.dp),
         )
     }
 }
