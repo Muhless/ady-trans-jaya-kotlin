@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.adytransjaya.R
 import com.adytransjaya.ui.components.card.deliveryTaskCard
 import com.adytransjaya.ui.components.card.menuCard
+import com.adytransjaya.ui.theme.AppColors
 
 @Composable
 fun homeScreen(navController: NavController) {
@@ -62,7 +63,7 @@ fun homeScreen(navController: NavController) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 36.sp,
                     fontFamily = FontFamily.Cursive,
-                    color = Color(0xFF1976D2),
+                    color = AppColors.BrandBlueDark,
                 )
             }
             Image(

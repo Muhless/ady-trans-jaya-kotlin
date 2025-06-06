@@ -23,9 +23,8 @@ class LoginViewModel : ViewModel() {
                 val response = RetrofitClient.api.login(LoginRequest(username, password))
                 if (response.isSuccessful) {
                     token = response.body()?.token ?: ""
-                    message = "Login berhasil"
                 } else {
-                    message = "Login gagal: ${response.code()}"
+                    message = "Login gagal"
                 }
             } catch (e: Exception) {
                 message = "Error: ${e.message}"
