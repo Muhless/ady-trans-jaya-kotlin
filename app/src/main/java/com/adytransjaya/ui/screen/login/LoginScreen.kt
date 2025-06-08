@@ -41,13 +41,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.adytransjaya.R
 import com.adytransjaya.ui.theme.AppColors
+import helpText
 
 @Composable
 fun loginScreen(
     navController: NavController,
     viewModel: LoginViewModel = viewModel(),
 ) {
-//    val context = LocalContext.current
     var passwordVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(viewModel.token) {
@@ -144,5 +144,7 @@ fun loginScreen(
         if (viewModel.message.isNotEmpty()) {
             Text(viewModel.message, color = AppColors.Danger)
         }
+        Spacer(modifier = Modifier.height(5.dp))
+        helpText()
     }
 }

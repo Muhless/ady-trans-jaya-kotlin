@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,10 +18,13 @@ import com.adytransjaya.ui.screen.delivery.deliveryScreen
 import com.adytransjaya.ui.screen.helpScreen
 import com.adytransjaya.ui.screen.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
+import com.adytransjaya.ui.screen.login.LoginViewModel
 import com.adytransjaya.ui.screen.login.loginScreen
 import com.adytransjaya.ui.screen.profileScreen
 import com.adytransjaya.ui.theme.AppColors
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +48,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("splash") { splashScreen(navController) }
                     composable("login") { loginScreen(navController) }
-                    composable("home") { homeScreen(navController) }
+                    composable("home") { backStackEntry ->
+                        val viewModel: LoginViewModel = hiltViewModel()
+                        homeScreen(navController, viewModel)
+                    }
                     composable("delivery") { deliveryScreen(navController) }
                     composable("delivery_detail") { deliveryDetailScreen(navController) }
                     composable("profile") { profileScreen(navController) }

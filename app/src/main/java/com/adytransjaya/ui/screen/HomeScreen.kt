@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,10 +33,15 @@ import androidx.navigation.NavController
 import com.adytransjaya.R
 import com.adytransjaya.ui.components.card.deliveryTaskCard
 import com.adytransjaya.ui.components.card.menuCard
+import com.adytransjaya.ui.screen.login.LoginViewModel
 import com.adytransjaya.ui.theme.AppColors
 
 @Composable
-fun homeScreen(navController: NavController) {
+fun homeScreen(
+    navController: NavController,
+    viewModel: LoginViewModel,
+) {
+    LaunchedEffect(Unit) { viewModel.loggedInUsername }
     Column {
         Row(
             modifier =
@@ -58,8 +64,9 @@ fun homeScreen(navController: NavController) {
                     fontSize = 18.sp,
                     color = Color.Gray,
                 )
+
                 Text(
-                    text = "Driver",
+                    text = viewModel.loggedInUsername,
                     fontWeight = FontWeight.Bold,
                     fontSize = 36.sp,
                     fontFamily = FontFamily.Cursive,
