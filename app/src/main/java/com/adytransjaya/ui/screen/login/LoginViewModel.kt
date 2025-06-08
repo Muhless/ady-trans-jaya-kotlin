@@ -25,7 +25,7 @@ class LoginViewModel
         var isLoading by mutableStateOf(false)
         var message by mutableStateOf("")
         var token by mutableStateOf("")
-        var loggedInUsername by mutableStateOf("")
+        var driverId by mutableStateOf(0)
 
         private val context = application.applicationContext
 
@@ -35,9 +35,15 @@ class LoginViewModel
                 try {
                     val response = RetrofitClient.api.login(LoginRequest(username, password))
                     if (response.isSuccessful) {
-                        token = response.body()?.token ?: ""
-                        loggedInUsername = username
-                        UserPreference.saveUsername(context, username)
+                        val responseBody = response.body()
+                        token = responseBody?.token ?: ""
+                        driverId = responseBody?.driverId ?: 0
+                        message = ""
+
+                        // Simpan token dan driverId ke DataStore (buat nanti)
+                        UserPreference.saveToken(context, token)
+                        UserPreference.saveDriverId(context, driverId)
+
                         message = ""
                     } else {
                         val errorBody = response.errorBody()?.string()
@@ -55,12 +61,8 @@ class LoginViewModel
             }
         }
 
-        fun loadSaveUsername() {
-            viewModelScope.launch {
-                loggedInUsername =
-                    UserPreference.getUsername(
-                        context,
-                    )
-            }
+        suspend fun loadSavedData() {
+            token = UserPreference.getToken(context)
+            driverId = UserPreference.getDriverId(context)
         }
     }

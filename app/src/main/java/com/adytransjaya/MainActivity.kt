@@ -20,6 +20,7 @@ import com.adytransjaya.ui.screen.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
 import com.adytransjaya.ui.screen.login.LoginViewModel
 import com.adytransjaya.ui.screen.login.loginScreen
+import com.adytransjaya.ui.screen.profile.ProfileViewModel
 import com.adytransjaya.ui.screen.profileScreen
 import com.adytransjaya.ui.theme.AppColors
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,8 +50,9 @@ class MainActivity : ComponentActivity() {
                     composable("splash") { splashScreen(navController) }
                     composable("login") { loginScreen(navController) }
                     composable("home") { backStackEntry ->
-                        val viewModel: LoginViewModel = hiltViewModel()
-                        homeScreen(navController, viewModel)
+                        val loginViewModel: LoginViewModel = hiltViewModel()
+                        val profileViewModel: ProfileViewModel = hiltViewModel()
+                        homeScreen(navController, loginViewModel, profileViewModel)
                     }
                     composable("delivery") { deliveryScreen(navController) }
                     composable("delivery_detail") { deliveryDetailScreen(navController) }
