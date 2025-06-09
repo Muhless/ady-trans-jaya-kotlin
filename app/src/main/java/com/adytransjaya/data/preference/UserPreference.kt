@@ -1,4 +1,4 @@
-package com.adytransjaya.data
+package com.adytransjaya.data.preference
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

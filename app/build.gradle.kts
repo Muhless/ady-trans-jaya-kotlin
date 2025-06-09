@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.androidx.activity.compose.v1101)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
-
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
