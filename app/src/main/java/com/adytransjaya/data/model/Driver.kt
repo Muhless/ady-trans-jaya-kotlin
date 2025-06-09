@@ -1,6 +1,6 @@
 package com.adytransjaya.data.model
 
-data class DriverProfile(
+data class Driver(
     val id: Int,
     val name: String,
     val photo: String,

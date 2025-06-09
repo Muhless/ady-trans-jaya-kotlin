@@ -6,8 +6,8 @@ import com.adytransjaya.data.model.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @POST("login-driver")
@@ -15,8 +15,8 @@ interface ApiService {
         @Body request: LoginRequest,
     ): Response<LoginResponse>
 
-    @GET("driver/me")
-    suspend fun getCurrentDriver(
-        @Header("Authorization") token: String,
-    ): DriverResponse
+    @GET("driver/username/{username}")
+    suspend fun getDriverByUsername(
+        @Path("username") username: String,
+    ): Response<DriverResponse>
 }

@@ -1,3 +1,5 @@
+package com.adytransjaya.ui.screen.login
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +24,7 @@ import com.adytransjaya.ui.components.login.loginButton
 import com.adytransjaya.ui.components.login.logoImage
 import com.adytransjaya.ui.components.login.passwordInput
 import com.adytransjaya.ui.components.login.usernameInput
-import com.adytransjaya.ui.screen.login.LoginViewModel
+import helpText
 
 @Composable
 fun loginScreen(
@@ -34,12 +35,12 @@ fun loginScreen(
     var password by rememberSaveable { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    val isLoading by remember { derivedStateOf { viewModel.isLoading.value } }
-    val loginError by remember { derivedStateOf { viewModel.loginError.value } }
-    val token by remember { derivedStateOf { viewModel.token.value } }
+    val loginSuccess by viewModel.loginSuccess
+    val isLoading by viewModel.isLoading
+    val loginError by viewModel.loginError
 
-    LaunchedEffect(token) {
-        if (token != null) {
+    LaunchedEffect(loginSuccess) {
+        if (loginSuccess) {
             navController.navigate("home") {
                 popUpTo("login") { inclusive = true }
             }
@@ -66,7 +67,7 @@ fun loginScreen(
         }
         if (!loginError.isNullOrEmpty()) {
             Text(
-                text = loginError.orEmpty(), // ✅ aman, tidak pakai !!
+                text = loginError.orEmpty(),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
             )

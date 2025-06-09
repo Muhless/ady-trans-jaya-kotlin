@@ -1,13 +1,14 @@
 package com.adytransjaya.ui.screen.profile
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.adytransjaya.ui.components.card.titleCard
+import com.adytransjaya.ui.screen.login.LoginViewModel
 
 @Composable
-fun profileScreen(navController: NavController) {
-    Column {
-        titleCard(title = "Profil")
-    }
+fun profileScreen(
+    navController: NavController,
+    loginViewModel: LoginViewModel,
+) {
+    titleCard(title = "Profil")
 }

@@ -1,34 +1,24 @@
 package com.adytransjaya.data.preference
 
-import android.content.Context
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import android.content.SharedPreferences
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-
-private val Context.dataStore by preferencesDataStore("user_prefs")
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class TokenPreferences(
-    private val context: Context,
+    private val sharedPreferences: SharedPreferences,
 ) {
     companion object {
-        val TOKEN_KEY = stringPreferencesKey("auth_token")
+        private const val KEY_TOKEN = "key_token"
     }
 
-    val tokenFlow: Flow<String?> =
-        context.dataStore.data
-            .map { preferences -> preferences[TOKEN_KEY] }
+    private val tokenFlow = MutableStateFlow(getTokenFromPrefs())
+
+    fun getTokenFlow(): Flow<String?> = tokenFlow
 
     suspend fun saveToken(token: String) {
-        context.dataStore.edit { prefs ->
-            prefs[TOKEN_KEY] = token
-        }
+        sharedPreferences.edit().putString(KEY_TOKEN, token).apply()
+        tokenFlow.value = token
     }
 
-    suspend fun clearToken() {
-        context.dataStore.edit { prefs ->
-            prefs.remove(TOKEN_KEY)
-        }
-    }
+    private fun getTokenFromPrefs(): String? = sharedPreferences.getString(KEY_TOKEN, null)
 }
