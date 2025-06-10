@@ -1,5 +1,6 @@
 package com.adytransjaya.data.network
 
+import com.adytransjaya.data.model.DeliveryResponse
 import com.adytransjaya.data.model.DriverResponse
 import com.adytransjaya.data.model.LoginRequest
 import com.adytransjaya.data.model.LoginResponse
@@ -19,4 +20,7 @@ interface ApiService {
     suspend fun getDriverByUsername(
         @Path("username") username: String,
     ): Response<DriverResponse>
+
+    @GET("transactions/driver/{driver_id}")
+    suspend fun getDeliveriesByDriverId(driverId: Int): Response<DeliveryResponse>
 }

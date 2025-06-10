@@ -5,7 +5,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adytransjaya.data.model.DeliveryItem
 import com.adytransjaya.data.model.Driver
+import com.adytransjaya.data.repository.DeliveryRepository
 import com.adytransjaya.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,6 +18,7 @@ class LoginViewModel
     @Inject
     constructor(
         private val userRepository: UserRepository,
+        private val deliveryRepository: DeliveryRepository,
     ) : ViewModel() {
         init {
             Log.d("LoginViewModel", "ViewModel instance created: ${this.hashCode()}")
@@ -32,6 +35,9 @@ class LoginViewModel
 
         private var _driver = mutableStateOf<Driver?>(null)
         val driver: State<Driver?> = _driver
+
+        private val _deliveries = mutableStateOf<List<DeliveryItem>>(emptyList())
+        val deliveries: State<List<DeliveryItem>> = _deliveries
 
         fun login(
             username: String,
@@ -71,19 +77,47 @@ class LoginViewModel
         private suspend fun fetchUser(username: String) {
             try {
                 val response = userRepository.getDriverByUsername(username)
+
                 if (response.isSuccessful) {
                     _driver.value = response.body()?.data
                     loginSuccess.value = true
                     Log.d(
                         "LoginViewModel",
                         "Driver loaded in instance ${this.hashCode()}: ${_driver.value}",
-                    ) // ✅ Tambahkan hash code
+                    )
+                    val driverId = _driver.value?.id
+                    if (driverId != null) {
+                        viewModelScope.launch {
+                            fetchDeliveries(driverId)
+                        }
+                    }
                 } else {
                     loginError.value = "Gagal ambil data user"
                     Log.d("LoginViewModel", "Failed to load driver: ${response.code()}")
                 }
             } catch (e: Exception) {
                 loginError.value = "Gagal fetch user: ${e.localizedMessage}"
+                Log.d("LoginViewModel", "Exception: ${e.localizedMessage}")
+            } finally {
+                isLoading.value = false
+            }
+        }
+
+        suspend fun fetchDeliveries(driverId: Int) {
+            try {
+                val response = deliveryRepository.getDeliveriesByDriverId(driverId)
+                if (response.isSuccessful) {
+                    _deliveries.value = response.body()?.data ?: emptyList()
+                    Log.d(
+                        "LoginViewModel",
+                        "Delivery loaded in instance ${this.hashCode()}: ${_deliveries.value}",
+                    )
+                } else {
+                    loginError.value = "Gagal memuat data: ${response.code()}"
+                    Log.d("LoginViewModel", "Failed to load deliveries: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                loginError.value = "Terjadi kesalahan: ${e.localizedMessage}"
                 Log.d("LoginViewModel", "Exception: ${e.localizedMessage}")
             } finally {
                 isLoading.value = false

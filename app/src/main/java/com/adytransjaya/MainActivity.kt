@@ -19,7 +19,7 @@ import com.adytransjaya.ui.navigation.bottomBar
 import com.adytransjaya.ui.screen.delivery.deliveryDetailScreen
 import com.adytransjaya.ui.screen.delivery.deliveryScreen
 import com.adytransjaya.ui.screen.helpScreen
-import com.adytransjaya.ui.screen.historyScreen
+import com.adytransjaya.ui.screen.history.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
 import com.adytransjaya.ui.screen.login.LoginViewModel
 import com.adytransjaya.ui.screen.login.loginScreen

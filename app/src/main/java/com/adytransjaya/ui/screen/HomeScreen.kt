@@ -41,11 +41,6 @@ fun homeScreen(
 ) {
     Log.d("HomeScreen", "Using ViewModel instance: ${loginViewModel.hashCode()}")
     val driver by loginViewModel.driver
-    val imageUrl =
-        driver
-            ?.photo
-            ?.takeIf { it.isNotEmpty() }
-            ?.let { "http://192.168.3.229:8080$it" }
 
     LaunchedEffect(driver) {
         Log.d("HomeScreen", "Driver in HomeScreen: $driver")
@@ -96,7 +91,7 @@ fun homeScreen(
                     )
                 }
                 AsyncImage(
-                    model = imageUrl,
+                    model = driver?.imageUrl ?: R.drawable.profile_picture,
                     contentDescription = if (driver?.photo != null) "Profile picture" else "Default Profile picture",
                     onError = {
                         Log.e("HomeScreen", "Failed to load image: ${it.result.throwable}")

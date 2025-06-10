@@ -8,12 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Receipt
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.TaskAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,8 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+data class DeliveryDetail(
+    val transaction_status: String,
+)
+
 @Composable
-fun deliveryDetailCard(modifier: Modifier = Modifier) {
+fun deliveryDetailCard(detail: DeliveryDetail) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -46,53 +44,20 @@ fun deliveryDetailCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 16.dp),
             )
 
-            infoRow(
-                icon = Icons.Default.Receipt,
-                label = "Kode Invoice",
-                value = "INV-20250604",
-            )
-            infoRow(
-                icon = Icons.Default.Person,
-                label = "Pelanggan",
-                value = "Toko Berkah Jaya",
-            )
-            infoRow(
-                icon = Icons.Default.Phone,
-                label = "No. Telepon",
-                value = "+62 812-3456-7890",
-            )
-            infoRow(
-                icon = Icons.Default.LocalShipping,
-                label = "Kendaraan",
-                value = "Toyota Pickup",
-            )
-            infoRow(
-                icon = Icons.Default.LocationOn,
-                label = "Alamat Pengiriman",
-                value = "Jl. Raya Bogor No. 123, Jakarta Timur",
-            )
-            infoRow(
-                icon = Icons.Default.LocationOn,
-                label = "Alamat Tujuan",
-                value = "Jl. Raya Bogor No. 123, Jakarta Timur",
-            )
-
-            infoRow(
-                icon = Icons.Default.Schedule,
-                label = "Estimasi",
-                value = "3 Juni 2025, 15:00 WIB",
-            )
-            infoRow(
-                icon = Icons.Default.TaskAlt,
-                label = "Status",
-                value = "Selesai",
-            )
+//            infoRow(Icons.Default.Receipt, "Kode Invoice", detail.invoiceCode)
+//            infoRow(Icons.Default.Person, "Pelanggan", detail.customerName)
+//            infoRow(Icons.Default.Phone, "No. Telepon", detail.phone)
+//            infoRow(Icons.Default.LocalShipping, "Kendaraan", detail.vehicle)
+//            infoRow(Icons.Default.LocationOn, "Alamat Pengiriman", detail.deliveryAddress)
+//            infoRow(Icons.Default.LocationOn, "Alamat Tujuan", detail.destinationAddress)
+//            infoRow(Icons.Default.Schedule, "Estimasi", detail.estimatedTime)
+            infoRow(Icons.Default.TaskAlt, "Status", detail.transaction_status)
         }
     }
 }
 
 @Composable
-private fun infoRow(
+fun infoRow(
     icon: ImageVector,
     label: String,
     value: String,
