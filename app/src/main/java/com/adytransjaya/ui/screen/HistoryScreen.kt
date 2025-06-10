@@ -12,14 +12,7 @@ import com.adytransjaya.ui.components.card.titleCard
 
 @Composable
 fun historyScreen(navController: NavController) {
-    val deliveries =
-        listOf(
-            "selesai",
-            "dibatalkan",
-            "selesai",
-            "pending",
-        )
-
+    titleCard(title = "Riwayat Pengiriman")
     LazyColumn(
         modifier =
             Modifier
@@ -27,7 +20,6 @@ fun historyScreen(navController: NavController) {
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        item { titleCard(title = "Riwayat Pengiriman") }
 //        items(deliveries) { status ->
 //            deliveryhHistoryCard(status = status, navController)
 //        }

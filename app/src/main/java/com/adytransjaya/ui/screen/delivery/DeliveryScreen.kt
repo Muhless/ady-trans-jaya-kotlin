@@ -5,7 +5,6 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.adytransjaya.ui.components.card.delivery.deliveryDetailCard
 import com.adytransjaya.ui.components.card.delivery.deliveryOnProcessCard
-import com.adytransjaya.ui.components.card.titleCard
 import com.adytransjaya.ui.theme.AppColors
 
 @Composable
@@ -32,20 +30,16 @@ fun deliveryScreen(
     destinationLng: Double = 0.0,
 ) {
     val context = LocalContext.current
+
     LazyColumn(
         modifier =
             Modifier
-                .fillMaxSize()
                 .padding(20.dp),
         verticalArrangement =
             Arrangement.spacedBy(
                 16.dp,
             ),
     ) {
-        item {
-            titleCard(title = "Pengiriman")
-        }
-
         item { deliveryDetailCard() }
         item {
             if (deliveryStatus != "dalam pengiriman") {
