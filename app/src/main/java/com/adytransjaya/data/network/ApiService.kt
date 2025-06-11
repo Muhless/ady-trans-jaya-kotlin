@@ -21,6 +21,8 @@ interface ApiService {
         @Path("username") username: String,
     ): Response<DriverResponse>
 
-    @GET("transactions/driver/{driver_id}")
-    suspend fun getDeliveriesByDriverId(driverId: Int): Response<DeliveryResponse>
+    @GET("deliveries/driver/{driverId}")
+    suspend fun getDeliveriesByDriverId(
+        @Path("driverId") driverId: Int,
+    ): DeliveryResponse
 }

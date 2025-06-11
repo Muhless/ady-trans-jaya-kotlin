@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TaskAlt
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,37 +18,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-data class DeliveryDetail(
-    val transaction_status: String,
+data class DeliveryCihuy(
+    val transactionStatus: String,
 )
 
 @Composable
-fun deliveryDetailCard(detail: DeliveryDetail) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-        ) {
-            Text(
-                text = "Informasi Pengiriman",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF2C3E50),
-                modifier = Modifier.padding(bottom = 16.dp),
-            )
-
-//            infoRow(Icons.Default.Receipt, "Kode Invoice", detail.invoiceCode)
-//            infoRow(Icons.Default.Person, "Pelanggan", detail.customerName)
-//            infoRow(Icons.Default.Phone, "No. Telepon", detail.phone)
-//            infoRow(Icons.Default.LocalShipping, "Kendaraan", detail.vehicle)
-//            infoRow(Icons.Default.LocationOn, "Alamat Pengiriman", detail.deliveryAddress)
-//            infoRow(Icons.Default.LocationOn, "Alamat Tujuan", detail.destinationAddress)
-//            infoRow(Icons.Default.Schedule, "Estimasi", detail.estimatedTime)
-            infoRow(Icons.Default.TaskAlt, "Status", detail.transaction_status)
-        }
+fun deliveryDetailCard(detail: DeliveryCihuy) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Invoice: ${detail.transactionStatus}")
     }
 }
 

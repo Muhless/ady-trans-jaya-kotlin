@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.adytransjaya.data.network.ApiService
 import com.adytransjaya.data.preference.TokenPreferences
+import com.adytransjaya.data.repository.DeliveryRepository
 import com.adytransjaya.data.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -32,7 +33,7 @@ object AppModule {
     fun provideApiService(): ApiService =
         Retrofit
             .Builder()
-            .baseUrl("http://192.168.3.229:8080/api/")
+            .baseUrl("http://192.168.50.229:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
@@ -43,4 +44,8 @@ object AppModule {
         apiService: ApiService,
         tokenPreferences: TokenPreferences,
     ): UserRepository = UserRepository(apiService, tokenPreferences)
+
+    @Provides
+    @Singleton
+    fun provideDeliveryRepository(apiService: ApiService): DeliveryRepository = DeliveryRepository(apiService)
 }
