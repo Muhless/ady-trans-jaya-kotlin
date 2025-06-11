@@ -1,7 +1,8 @@
 package com.adytransjaya.data.repository
 
-import com.adytransjaya.data.model.DeliveryItem
+import com.adytransjaya.data.model.DeliveryResponse
 import com.adytransjaya.data.network.ApiService
+import retrofit2.Response
 import javax.inject.Inject
 
 class DeliveryRepository
@@ -9,5 +10,8 @@ class DeliveryRepository
     constructor(
         private val apiService: ApiService,
     ) {
-        suspend fun getDeliverByDriverId(driverId: Int): List<DeliveryItem> = apiService.getDeliveriesByDriverId(driverId).data
+        suspend fun fetchDeliveries(
+            token: String,
+            driverId: Int,
+        ): Response<DeliveryResponse> = apiService.getDeliveriesByDriverId("Bearer $token", driverId)
     }

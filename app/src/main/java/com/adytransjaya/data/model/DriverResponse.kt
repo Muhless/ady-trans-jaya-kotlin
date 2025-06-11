@@ -1,5 +1,6 @@
 package com.adytransjaya.data.model
 
 data class DriverResponse(
-    val data: Driver,
+    val message: String,
+    val driver: Driver,
 )

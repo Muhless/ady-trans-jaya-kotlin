@@ -31,7 +31,7 @@ class DriverViewModel
                 try {
                     val response = userRepository.getDriverByUsername(username)
                     if (response.isSuccessful) {
-                        driver.value = response.body()?.data
+                        driver.value = response.body()?.driver
                         Log.d("DriverViewModel", "Driver loaded: ${driver.value}")
                         errorMessage.value = null
                     } else {

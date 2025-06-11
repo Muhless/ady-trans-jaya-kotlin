@@ -15,7 +15,7 @@ sealed class BottomNavItem(
 ) {
     object Home : BottomNavItem("home", "Beranda", Icons.Default.Home)
 
-    object Delivery : BottomNavItem("delivery", "Pengiriman", Icons.Default.LocalShipping)
+    object Delivery : BottomNavItem("delivery/{id}", "Pengiriman", Icons.Default.LocalShipping)
 
     object History : BottomNavItem("history", "Riwayat", Icons.Default.History)
 

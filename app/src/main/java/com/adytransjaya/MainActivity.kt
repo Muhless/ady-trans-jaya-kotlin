@@ -16,8 +16,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adytransjaya.ui.components.splashScreen
 import com.adytransjaya.ui.navigation.bottomBar
+import com.adytransjaya.ui.screen.delivery.DeliveryScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
-import com.adytransjaya.ui.screen.delivery.deliveryScreen
 import com.adytransjaya.ui.screen.helpScreen
 import com.adytransjaya.ui.screen.history.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
@@ -64,7 +64,7 @@ fun MainApp() {
             composable("home") { homeScreen(navController, loginViewModel) }
             composable("delivery/{id}") {
                 val deliveryViewModel: DeliveryViewModel = hiltViewModel()
-                deliveryScreen(navController, deliveryViewModel)
+                DeliveryScreen(navController, deliveryViewModel)
             }
 
 //            composable("delivery_detail") { deliveryDetailScreen(navController) }

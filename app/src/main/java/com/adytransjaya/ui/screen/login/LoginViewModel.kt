@@ -1,46 +1,42 @@
 package com.adytransjaya.ui.screen.login
 
+import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.adytransjaya.data.model.Driver
+import com.adytransjaya.data.model.LoginResponse
+import com.adytransjaya.data.preference.UserPreference
 import com.adytransjaya.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
     @Inject
     constructor(
+        application: Application,
         private val userRepository: UserRepository,
-    ) : ViewModel() {
-        init {
-            Log.d("LoginViewModel", "ViewModel instance created: ${this.hashCode()}")
-        }
+    ) : AndroidViewModel(application) {
+        private val context = application.applicationContext
 
-        var loginSuccess = mutableStateOf(false)
-            private set
-        var isLoading = mutableStateOf(false)
-            private set
-        var loginError = mutableStateOf<String?>(null)
-            private set
-        var token = mutableStateOf<String?>(null)
-            private set
+        val username = mutableStateOf("")
+        val password = mutableStateOf("")
+        val token = mutableStateOf("")
+        val loginError = mutableStateOf<String?>(null)
+        val isLoading = mutableStateOf(false)
+        val loginSuccess = mutableStateOf(false)
 
-        private var _driver = mutableStateOf<Driver?>(null)
-        val driver: State<Driver?> = _driver
+        val driver = mutableStateOf<Driver?>(null)
 
         fun login(
             username: String,
             password: String,
         ) {
-            if (username.isBlank() || password.isBlank()) {
-                loginError.value = "Username dan password tidak boleh kosong"
-                return
-            }
+            if (!validateInput(username, password)) return
 
             loginError.value = null
             isLoading.value = true
@@ -48,46 +44,72 @@ class LoginViewModel
             viewModelScope.launch {
                 try {
                     val response = userRepository.login(username, password)
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        if (body?.token != null) {
-                            token.value = body.token
-                            userRepository.saveToken(body.token)
-                            fetchUser(username)
-                        } else {
-                            loginError.value = body?.message ?: "Login gagal"
-                        }
-                    } else {
-                        loginError.value = "Response error: ${response.code()}"
-                    }
+                    handleLoginResponse(response)
                 } catch (e: Exception) {
-                    loginError.value = "Error: ${e.localizedMessage}"
+                    loginError.value = "Terjadi kesalahan: ${e.localizedMessage}"
                 } finally {
                     isLoading.value = false
                 }
             }
         }
 
-        private suspend fun fetchUser(username: String) {
-            try {
-                val response = userRepository.getDriverByUsername(username)
+        private fun validateInput(
+            username: String,
+            password: String,
+        ): Boolean =
+            if (username.isBlank() || password.isBlank()) {
+                loginError.value = "Username dan password tidak boleh kosong"
+                false
+            } else {
+                true
+            }
 
-                if (response.isSuccessful) {
-                    _driver.value = response.body()?.data
+        private suspend fun handleLoginResponse(response: Response<LoginResponse>) {
+            if (response.isSuccessful) {
+                val body = response.body()
+                Log.d("LoginViewModel", "Driver response: $body")
+                if (body?.token != null) {
+                    token.value = body.token
+                    saveUserSession(body)
                     loginSuccess.value = true
-                    Log.d(
-                        "LoginViewModel",
-                        "Driver loaded in instance ${this.hashCode()}: ${_driver.value}",
-                    )
                 } else {
-                    loginError.value = "Gagal ambil data user"
-                    Log.d("LoginViewModel", "Failed to load driver: ${response.code()}")
+                    loginError.value = body?.message ?: "Login gagal"
                 }
-            } catch (e: Exception) {
-                loginError.value = "Gagal fetch user: ${e.localizedMessage}"
-                Log.d("LoginViewModel", "Exception: ${e.localizedMessage}")
-            } finally {
-                isLoading.value = false
+            } else {
+                loginError.value = "Login gagal: ${response.code()}"
             }
         }
+
+        private suspend fun saveUserSession(body: LoginResponse) {
+            body.token?.let { token ->
+                UserPreference.saveToken(context, token)
+            }
+            body.driver?.let { driverData ->
+                UserPreference.saveDriverId(context, driverData.id)
+                driver.value = driverData
+            }
+        }
+
+//        private fun fetchUser(username: String) {
+//            viewModelScope.launch {
+//                try {
+//                    val response = userRepository.getDriverByUsername(username)
+//                    if (response.isSuccessful) {
+//                        val body = response.body()
+//                        val fetchedDriver = body?.driver
+//                        if (fetchedDriver != null) {
+//                            driver.value = fetchedDriver
+//                            UserPreference.saveDriverId(context, fetchedDriver.id)
+//                            loginSuccess.value = true
+//                        } else {
+//                            loginError.value = "Data driver tidak ditemukan"
+//                        }
+//                    } else {
+//                        loginError.value = "Gagal mengambil data user: ${response.code()}"
+//                    }
+//                } catch (e: Exception) {
+//                    loginError.value = "Terjadi kesalahan: ${e.localizedMessage}"
+//                }
+//            }
+//        }
     }

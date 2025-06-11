@@ -11,30 +11,38 @@ import kotlinx.coroutines.flow.map
 object UserPreference {
     private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 
-    private val TOKEN_KEY = stringPreferencesKey("token")
-    private val DRIVER_ID_KEY = intPreferencesKey("driver_id")
+    private val KEY_TOKEN = stringPreferencesKey("token")
+    private val KEY_DRIVER_ID = intPreferencesKey("driver_id")
 
     suspend fun saveToken(
         context: Context,
         token: String,
     ) {
-        context.dataStore.edit { prefs -> prefs[TOKEN_KEY] = token }
+        context.dataStore.edit { prefs ->
+            prefs[KEY_TOKEN] = token
+        }
     }
 
-    suspend fun getToken(context: Context): String =
+    suspend fun getToken(context: Context): String? =
         context.dataStore.data
-            .map { it[TOKEN_KEY] ?: "" }
+            .map { prefs -> prefs[KEY_TOKEN] }
             .first()
 
     suspend fun saveDriverId(
         context: Context,
         id: Int,
     ) {
-        context.dataStore.edit { prefs -> prefs[DRIVER_ID_KEY] = id }
+        context.dataStore.edit { prefs ->
+            prefs[KEY_DRIVER_ID] = id
+        }
     }
 
     suspend fun getDriverId(context: Context): Int =
         context.dataStore.data
-            .map { it[DRIVER_ID_KEY] ?: 0 }
+            .map { prefs -> prefs[KEY_DRIVER_ID] ?: 0 }
             .first()
+
+    suspend fun clear(context: Context) {
+        context.dataStore.edit { it.clear() }
+    }
 }

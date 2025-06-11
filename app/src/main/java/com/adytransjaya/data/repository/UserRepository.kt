@@ -25,7 +25,5 @@ class UserRepository
             tokenPreferences.saveToken(token)
         }
 
-        fun getTokenFlow() = tokenPreferences.getTokenFlow()
-
         suspend fun getDriverByUsername(username: String): Response<DriverResponse> = api.getDriverByUsername(username)
     }
