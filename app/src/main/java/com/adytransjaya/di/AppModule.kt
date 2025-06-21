@@ -6,6 +6,8 @@ import com.adytransjaya.data.network.ApiService
 import com.adytransjaya.data.preference.TokenPreferences
 import com.adytransjaya.data.repository.DeliveryRepository
 import com.adytransjaya.data.repository.UserRepository
+import com.squareup.moshi.KotlinJsonAdapterFactory
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +16,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -44,11 +46,17 @@ object AppModule {
                 .addInterceptor(logging)
                 .build()
 
+        val moshi =
+            Moshi
+                .Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
+
         return Retrofit
             .Builder()
-            .baseUrl("http://192.168.50.229:8080/api/")
+            .baseUrl("http://192.168.135.229:8080/api/")
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(ApiService::class.java)
     }

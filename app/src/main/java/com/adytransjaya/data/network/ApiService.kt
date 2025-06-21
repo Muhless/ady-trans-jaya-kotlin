@@ -27,4 +27,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("driverId") driverId: Int,
     ): Response<DeliveryResponse>
+
+    @GET("delivery/driver/{id}/active")
+    suspend fun getActiveDelivery(
+        @Header("Authorization") token: String,
+        @Path("id") driverId: Int,
+    ): Response<DeliveryResponse>
 }

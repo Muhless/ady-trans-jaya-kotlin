@@ -9,5 +9,5 @@ data class Driver(
     val username: String,
 ) {
     val imageUrl: String?
-        get() = photo?.takeIf { it.isNotEmpty() }?.let { "http://192.168.50.229:8080$it" }
+        get() = photo?.takeIf { it.isNotEmpty() }?.let { "http://192.168.135.229:8080$it" }
 }

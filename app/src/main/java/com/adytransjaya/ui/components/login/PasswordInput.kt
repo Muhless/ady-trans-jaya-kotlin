@@ -1,6 +1,7 @@
 package com.adytransjaya.ui.components.login
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Visibility
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adytransjaya.ui.theme.AppColors
 
@@ -40,13 +42,14 @@ fun passwordInput(
                 Icon(imageVector = icon, contentDescription = desc)
             }
         },
+        shape = RoundedCornerShape(12.dp),
         colors =
             TextFieldDefaults.colors(
                 focusedContainerColor = Color(0xFFF0F0F0),
-                unfocusedContainerColor = Color(0xFFF0F0F0),
+                unfocusedContainerColor = Color.White,
                 focusedIndicatorColor = AppColors.BrandBlueDark,
                 unfocusedIndicatorColor = Color.LightGray,
-                focusedLabelColor = AppColors.BrandBlueDark,
+                focusedLabelColor = Color.LightGray,
             ),
         textStyle = TextStyle(fontSize = 16.sp),
         modifier = Modifier.fillMaxWidth(),

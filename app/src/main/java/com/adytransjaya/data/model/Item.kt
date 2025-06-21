@@ -4,11 +4,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Vehicle(
+data class Item(
     val id: Int,
-    val name: String,
-    val type: String,
-    val capacity: String,
-    @Json(name = "rate_per_km")
-    val ratePerKm: Int,
+    @Json(name = "item_name")
+    val itemName: String,
+    val quantity: String,
+    val weight: Int,
 )

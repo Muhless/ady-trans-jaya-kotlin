@@ -1,66 +1,94 @@
-package com.adytransjaya.ui.components.card.delivery
-
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.adytransjaya.data.model.DeliveryItem
+import com.adytransjaya.ui.utils.getStatusColor
 
-data class DeliveryCihuy(
-    val transactionStatus: String,
-)
-
+@Suppress("ktlint:standard:function-naming")
 @Composable
-fun deliveryDetailCard(detail: DeliveryCihuy) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("Invoice: ${detail.transactionStatus}")
-    }
-}
-
-@Composable
-fun infoRow(
-    icon: ImageVector,
-    label: String,
-    value: String,
-) {
-    Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
+fun DeliveryDetailCard(delivery: DeliveryItem) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = Color(0xFF6C757D),
-            modifier = Modifier.size(20.dp),
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(modifier = Modifier.weight(1f)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "Delivery ID: ${delivery.id}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                delivery.deliveryStatus?.let { status ->
+                    Text(
+                        text = status.uppercase(),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = getStatusColor(status),
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
-                text = label,
-                fontSize = 12.sp,
-                color = Color(0xFF6C757D),
+                text = "Pelanggan: ${delivery.transaction.customer.name}",
+                style = MaterialTheme.typography.bodyMedium,
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
             Text(
-                text = value,
-                fontSize = 14.sp,
-                color = Color(0xFF2C3E50),
-                fontWeight = FontWeight.Medium,
+                text = "Pickup: ${delivery.pickupAddress}",
+                style = MaterialTheme.typography.bodyMedium,
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Destination: ${delivery.destinationAddress}",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Load Type: ${delivery.loadType}",
+                style = MaterialTheme.typography.bodySmall,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Total Weight: ${delivery.totalWeight} kg",
+                style = MaterialTheme.typography.bodySmall,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Delivery Date: ${delivery.deliveryDate}",
+                style = MaterialTheme.typography.bodySmall,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

@@ -78,4 +78,10 @@ dependencies {
 //    coil
     implementation(libs.coil.compose)
 //    font
+
+//    moshi
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.converter.moshi)
+    kapt(libs.moshi.kotlin.codegen)
 }

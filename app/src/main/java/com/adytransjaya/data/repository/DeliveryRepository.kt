@@ -14,4 +14,9 @@ class DeliveryRepository
             token: String,
             driverId: Int,
         ): Response<DeliveryResponse> = apiService.getDeliveriesByDriverId("Bearer $token", driverId)
+
+        suspend fun getActiveDelivery(
+            token: String,
+            driverId: Int,
+        ): Response<DeliveryResponse> = apiService.getActiveDelivery("Bearer $token", driverId)
     }

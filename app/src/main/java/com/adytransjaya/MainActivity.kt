@@ -67,7 +67,6 @@ fun MainApp() {
                 DeliveryScreen(navController, deliveryViewModel)
             }
 
-//            composable("delivery_detail") { deliveryDetailScreen(navController) }
             composable("profile") {
                 profileScreen(
                     navController,
