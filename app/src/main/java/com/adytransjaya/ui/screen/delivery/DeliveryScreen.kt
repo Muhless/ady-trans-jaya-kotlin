@@ -1,6 +1,5 @@
 package com.adytransjaya.ui.screen.delivery
 
-import DeliveryDetailCard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.adytransjaya.ui.components.card.delivery.DeliveryDetailCard
 
 @Suppress("ktlint:standard:function-naming")
 @Composable

@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -28,6 +27,7 @@ fun usernameInput(
         label = { Text("Username") },
         singleLine = true,
         leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "User") },
+        shape = RoundedCornerShape(12.dp),
         colors =
             TextFieldDefaults.colors(
                 focusedContainerColor = Color(0xFFF0F0F0),
@@ -40,6 +40,6 @@ fun usernameInput(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(30.dp)),
+
     )
 }
