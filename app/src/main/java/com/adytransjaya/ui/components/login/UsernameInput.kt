@@ -30,16 +30,15 @@ fun usernameInput(
         shape = RoundedCornerShape(12.dp),
         colors =
             TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFFF0F0F0),
-                unfocusedContainerColor = Color.White,
-                focusedIndicatorColor = AppColors.BrandBlueDark,
+                focusedContainerColor = AppColors.base,
+                unfocusedContainerColor = AppColors.base,
+                focusedIndicatorColor = AppColors.primary,
                 unfocusedIndicatorColor = Color.LightGray,
-                focusedLabelColor = Color.LightGray,
+                focusedLabelColor = Color.Black,
             ),
         textStyle = TextStyle(fontSize = 16.sp),
         modifier =
             Modifier
-                .fillMaxWidth()
-
+                .fillMaxWidth(),
     )
 }

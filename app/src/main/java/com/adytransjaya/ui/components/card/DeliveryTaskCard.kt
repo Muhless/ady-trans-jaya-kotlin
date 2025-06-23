@@ -30,7 +30,7 @@ fun deliveryTaskCard() {
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 40.dp)
                 .height(170.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .shadow(1.dp),
@@ -56,7 +56,7 @@ fun deliveryTaskCard() {
                         .padding(10.dp),
                 text = "Anda belum memiliki tugas pengiriman",
                 fontSize = 18.sp,
-                color = AppColors.NeutralBackground,
+                color = AppColors.background,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
             )

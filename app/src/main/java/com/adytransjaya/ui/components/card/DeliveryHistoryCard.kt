@@ -62,7 +62,7 @@ fun deliveryhHistoryCard(
             val statusColor =
                 when (status.lowercase()) {
                     "selesai" -> AppColors.Success
-                    "dibatalkan" -> Color.Red
+                    "dibatalkan" -> AppColors.Danger
                     else -> Color.Black
                 }
             Text(

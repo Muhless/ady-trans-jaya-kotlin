@@ -47,7 +47,7 @@ fun MainApp() {
     val isLoginOrSplash = currentRoute == "login" || currentRoute == "splash"
 
     Scaffold(
-        containerColor = if (isLoginOrSplash) Color.White else AppColors.Background,
+        containerColor = if (isLoginOrSplash) Color.White else AppColors.background,
         bottomBar = {
             if (currentRoute != "login" && currentRoute != "splash") {
                 bottomBar(navController)

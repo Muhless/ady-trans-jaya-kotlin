@@ -40,9 +40,6 @@ fun homeScreen(
 ) {
     val driver by loginViewModel.driver
 
-//    Log.d("HomeScreen", "Driver in HomeScreen: $driver")
-//    Log.d("HomeScreen", "Using ViewModel instance: ${loginViewModel.hashCode()}")
-
     Column {
         Box(
             modifier =
@@ -64,8 +61,8 @@ fun homeScreen(
                 modifier =
                     Modifier
                         .padding(
-                            start = 30.dp,
-                            end = 30.dp,
+                            start = 40.dp,
+                            end = 40.dp,
                             top = 30.dp,
                         ),
                 verticalAlignment = Alignment.CenterVertically,
@@ -110,7 +107,7 @@ fun homeScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Column(modifier = Modifier.padding(horizontal = 30.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 40.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 menuCard(
                     image = R.drawable.icon_location,

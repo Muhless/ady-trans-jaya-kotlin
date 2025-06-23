@@ -12,27 +12,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.adytransjaya.data.model.DeliveryItem
+import com.adytransjaya.ui.components.Divider
 import com.adytransjaya.ui.theme.AppColors
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun DeliveryDetailCard(delivery: DeliveryItem) {
+fun ItemInfoCard(delivery: DeliveryItem) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(AppColors.background),
+        modifier =
+            Modifier
+                .fillMaxWidth(),
     ) {
         Column(
             modifier =
                 Modifier
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+                    .background(AppColors.card)
+                    .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text(text = "Detail Pengiriman", style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = "Informasi Barang",
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Divider()
 
-            CustomerInfoCard(delivery = delivery)
-            DeliveryInfoCard(delivery = delivery)
-            ItemInfoCard(delivery = delivery)
+            delivery.items.forEach { item ->
+                DeliveryList(label = "Nama Barang", value = item.itemName)
+                DeliveryList(label = "Jumlah Barang", value = item.quantity)
+                DeliveryList(label = "Berat Barang", value = "${item.weight}")
+            }
         }
     }
 }
