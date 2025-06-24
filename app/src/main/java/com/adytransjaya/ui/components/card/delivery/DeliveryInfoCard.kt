@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.adytransjaya.data.model.DeliveryItem
 import com.adytransjaya.ui.components.Divider
 import com.adytransjaya.ui.theme.AppColors
+import com.adytransjaya.utils.dateFormatter
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -36,13 +37,14 @@ fun DeliveryInfoCard(delivery: DeliveryItem) {
             )
             Divider()
             DeliveryList(label = "Kode Pengiriman", value = delivery.deliveryCode)
-            DeliveryList(label = "Jenis Barang", value = delivery.loadType)
-            DeliveryList(label = "Total Barang", value = delivery.totalItem)
-            DeliveryList(label = "Total Berat", value = delivery.totalWeight)
             DeliveryList(label = "Alamat Penjemputan", value = delivery.pickupAddress)
             DeliveryList(label = "Alamat Tujuan", value = delivery.destinationAddress)
-            DeliveryList(label = "Tanggal Pengiriman", value = delivery.deliveryDate)
-            DeliveryList(label = "Batas Pengiriman", value = delivery.deliveryDeadlineDate)
+            DeliveryList(label = "Tanggal Pengiriman", value = dateFormatter(delivery.deliveryDate))
+            DeliveryList(
+                label = "Batas Pengiriman",
+                value = dateFormatter(delivery.deliveryDeadlineDate),
+            )
+            DeliveryList(label = "Status Pengiriman", value = delivery.deliveryStatus)
         }
     }
 }

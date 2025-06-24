@@ -2,6 +2,7 @@ package com.adytransjaya.ui.components.login
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,6 +23,7 @@ fun loginButton(
         modifier = Modifier.fillMaxWidth(),
         enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(AppColors.BrandBlue),
+        shape = RoundedCornerShape(10.dp),
     ) {
         if (isLoading) {
             CircularProgressIndicator(

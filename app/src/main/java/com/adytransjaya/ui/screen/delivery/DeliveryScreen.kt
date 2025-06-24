@@ -3,8 +3,12 @@ package com.adytransjaya.ui.screen.delivery
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.adytransjaya.ui.components.card.delivery.DeliveryDetailCard
+import com.adytransjaya.ui.theme.AppColors
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -54,13 +59,38 @@ fun DeliveryScreen(
             delivery != null -> {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding =
-                        androidx.compose.foundation.layout
-                            .PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
                 ) {
                     item {
                         DeliveryDetailCard(delivery = delivery!!)
+                    }
+                    delivery?.let {
+                        if (it.deliveryStatus == "menunggu pengemudi") {
+                            item {
+                                Button(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                                    onClick = {
+                                        delivery?.let {
+                                            deliveryViewModel.updateDelivery(
+                                                it.id,
+                                                "dalam pengiriman",
+                                            )
+                                        }
+                                    },
+                                    colors =
+                                        ButtonDefaults.buttonColors(
+                                            containerColor = AppColors.BrandBlue,
+                                            contentColor = AppColors.base,
+                                        ),
+                                    shape = RoundedCornerShape(10.dp),
+                                ) {
+                                    Text("Mulai Pengiriman")
+                                }
+                            }
+                        }
                     }
                 }
             }

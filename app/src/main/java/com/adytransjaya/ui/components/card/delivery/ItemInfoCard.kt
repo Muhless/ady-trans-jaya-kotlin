@@ -35,7 +35,9 @@ fun ItemInfoCard(delivery: DeliveryItem) {
                 style = MaterialTheme.typography.titleMedium,
             )
             Divider()
-
+            DeliveryList(label = "Jenis Barang", value = delivery.loadType)
+            DeliveryList(label = "Total Barang", value = delivery.totalItem)
+            DeliveryList(label = "Total Berat", value = delivery.totalWeight)
             delivery.items.forEach { item ->
                 DeliveryList(label = "Nama Barang", value = item.itemName)
                 DeliveryList(label = "Jumlah Barang", value = item.quantity)

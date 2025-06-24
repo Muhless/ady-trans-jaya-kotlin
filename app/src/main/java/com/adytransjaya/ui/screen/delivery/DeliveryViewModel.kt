@@ -108,11 +108,29 @@ class DeliveryViewModel
             }
         }
 
-        fun clearError() {
-            _errorMessage.value = null
-        }
-
-        fun refreshDeliveries() {
-            getDeliveries()
+        fun updateDelivery(
+            id: Int,
+            status: String,
+        ) {
+            viewModelScope.launch {
+                _isLoading.value = true
+                _errorMessage.value = null
+                try {
+                    val token = UserPreference.getToken(context)
+                    if (token == null) {
+                        _errorMessage.value = "Token tidak tersedia"
+                    }
+                    val response = deliveryRepository.updateDelivery("Bearer $token", id, status)
+                    if (response.isSuccessful) {
+                        getActiveDelivery()
+                    } else {
+                        _errorMessage.value = "Gagal memulai pengiriman (${response.code()}"
+                    }
+                } catch (e: Exception) {
+                    _errorMessage.value = "Error: (${e.localizedMessage ?: "Terjadi kesalahan"}"
+                } finally {
+                    _isLoading.value = false
+                }
+            }
         }
     }

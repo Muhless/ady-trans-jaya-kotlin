@@ -54,7 +54,7 @@ object AppModule {
 
         return Retrofit
             .Builder()
-            .baseUrl("http://192.168.135.229:8080/api/")
+            .baseUrl("http://192.168.58.229:8080/api/")
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()

@@ -18,15 +18,16 @@ import com.adytransjaya.ui.theme.AppColors
 @Composable
 fun DeliveryDetailCard(delivery: DeliveryItem) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(AppColors.background),
+        modifier =
+            Modifier
+                .fillMaxWidth(),
     ) {
         Column(
             modifier =
                 Modifier
+                    .background(AppColors.background)
                     .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Detail Pengiriman", style = MaterialTheme.typography.titleLarge)
 

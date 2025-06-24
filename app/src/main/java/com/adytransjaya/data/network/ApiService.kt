@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -32,5 +33,12 @@ interface ApiService {
     suspend fun getActiveDelivery(
         @Header("Authorization") token: String,
         @Path("id") driverId: Int,
+    ): Response<DeliveryResponse>
+
+    @PATCH("delivery/{id}/")
+    suspend fun updateDelivery(
+        @Header("Authorization") token: String,
+        @Path("id") driverId: Int,
+        @Body body: Map<String, String>,
     ): Response<DeliveryResponse>
 }

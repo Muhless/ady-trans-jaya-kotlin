@@ -19,4 +19,15 @@ class DeliveryRepository
             token: String,
             driverId: Int,
         ): Response<DeliveryResponse> = apiService.getActiveDelivery("Bearer $token", driverId)
+
+        suspend fun updateDelivery(
+            token: String,
+            driverId: Int,
+            status: String,
+        ): Response<DeliveryResponse> =
+            apiService.updateDelivery(
+                "Bearer $token",
+                driverId,
+                body = mapOf("delivery_status" to status),
+            )
     }
