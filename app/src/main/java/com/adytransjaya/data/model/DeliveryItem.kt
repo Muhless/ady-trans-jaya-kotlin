@@ -19,8 +19,16 @@ data class DeliveryItem(
     var totalItem: Int,
     @Json(name = "pickup_address")
     val pickupAddress: String,
+    @Json(name = "pickup_address_lat")
+    val pickupAddressLat: Double,
+    @Json(name = "pickup_address_lang")
+    val pickupAddressLang: Double,
     @Json(name = "destination_address")
     val destinationAddress: String,
+    @Json(name = "destination_address_lat")
+    val destinationAddressLat: Double,
+    @Json(name = "destination_address_lang")
+    val destinationAddressLang: Double,
     @Json(name = "delivery_date")
     val deliveryDate: String,
     @Json(name = "delivery_deadline_date")
@@ -30,4 +38,5 @@ data class DeliveryItem(
     @Json(name = "delivery_cost")
     val deliveryCost: Int,
     val items: List<Item>,
+    val deliveryProgress: List<DeliveryProgress>,
 )

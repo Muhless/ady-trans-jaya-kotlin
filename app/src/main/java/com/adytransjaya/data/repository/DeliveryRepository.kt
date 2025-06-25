@@ -24,7 +24,7 @@ class DeliveryRepository
             token: String,
             driverId: Int,
             status: String,
-        ): Response<DeliveryResponse> =
+        ): Response<Unit> =
             apiService.updateDelivery(
                 "Bearer $token",
                 driverId,

@@ -1,8 +1,10 @@
 package com.adytransjaya.ui.components.card.delivery
 
+import UnderlinedClickableText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -38,7 +40,27 @@ fun DeliveryInfoCard(delivery: DeliveryItem) {
             Divider()
             DeliveryList(label = "Kode Pengiriman", value = delivery.deliveryCode)
             DeliveryList(label = "Alamat Penjemputan", value = delivery.pickupAddress)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text("")
+                UnderlinedClickableText(
+                    pickupLat = delivery.pickupAddressLat,
+                    pickupLng = delivery.pickupAddressLang,
+                )
+            }
             DeliveryList(label = "Alamat Tujuan", value = delivery.destinationAddress)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text("")
+                UnderlinedClickableText(
+                    deliveryLat = delivery.destinationAddressLat,
+                    deliveryLng = delivery.destinationAddressLang,
+                )
+            }
             DeliveryList(label = "Tanggal Pengiriman", value = dateFormatter(delivery.deliveryDate))
             DeliveryList(
                 label = "Batas Pengiriman",

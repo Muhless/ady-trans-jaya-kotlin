@@ -35,10 +35,10 @@ interface ApiService {
         @Path("id") driverId: Int,
     ): Response<DeliveryResponse>
 
-    @PATCH("delivery/{id}/")
+    @PATCH("delivery/driver/{id}/status")
     suspend fun updateDelivery(
         @Header("Authorization") token: String,
         @Path("id") driverId: Int,
         @Body body: Map<String, String>,
-    ): Response<DeliveryResponse>
+    ): Response<Unit>
 }

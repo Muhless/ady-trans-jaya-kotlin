@@ -111,6 +111,7 @@ class DeliveryViewModel
         fun updateDelivery(
             id: Int,
             status: String,
+            onSuccess: () -> Unit = {},
         ) {
             viewModelScope.launch {
                 _isLoading.value = true
@@ -122,6 +123,7 @@ class DeliveryViewModel
                     }
                     val response = deliveryRepository.updateDelivery("Bearer $token", id, status)
                     if (response.isSuccessful) {
+                        onSuccess()
                         getActiveDelivery()
                     } else {
                         _errorMessage.value = "Gagal memulai pengiriman (${response.code()}"
