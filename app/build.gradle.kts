@@ -84,4 +84,10 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
     kapt(libs.moshi.kotlin.codegen)
+
+//    upload
+    implementation(libs.okhttp)
+    implementation(libs.androidx.activity.compose.v1101)
+    implementation(libs.androidx.core.ktx.v1120)
+    implementation(libs.accompanist.permissions)
 }

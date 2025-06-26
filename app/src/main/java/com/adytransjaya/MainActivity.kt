@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.adytransjaya.data.repository.DeliveryRepository
 import com.adytransjaya.ui.components.splashScreen
 import com.adytransjaya.ui.navigation.bottomBar
 import com.adytransjaya.ui.screen.delivery.DeliveryProgressScreen
@@ -27,20 +28,24 @@ import com.adytransjaya.ui.screen.login.loginScreen
 import com.adytransjaya.ui.screen.profile.profileScreen
 import com.adytransjaya.ui.theme.AppColors
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var repository: DeliveryRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainApp()
+            MainApp(repository)
         }
     }
 }
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun MainApp() {
+fun MainApp(repository: DeliveryRepository) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -68,7 +73,7 @@ fun MainApp() {
                 DeliveryScreen(navController, deliveryViewModel)
             }
             composable("delivery-progress") {
-                DeliveryProgressScreen(navController, deliveryViewModel)
+                DeliveryProgressScreen(navController, deliveryViewModel, repository)
             }
 
             composable("profile") {

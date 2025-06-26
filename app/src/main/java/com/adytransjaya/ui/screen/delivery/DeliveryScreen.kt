@@ -117,7 +117,7 @@ fun DeliveryScreen(
                                         onClick = { showDialog = true },
                                         colors =
                                             ButtonDefaults.buttonColors(
-                                                containerColor = AppColors.BrandBlue,
+                                                containerColor = AppColors.Success,
                                                 contentColor = AppColors.base,
                                             ),
                                         shape = RoundedCornerShape(10.dp),
@@ -135,7 +135,7 @@ fun DeliveryScreen(
                                         },
                                         colors =
                                             ButtonDefaults.buttonColors(
-                                                containerColor = AppColors.Success,
+                                                containerColor = AppColors.BrandBlue,
                                                 contentColor = AppColors.base,
                                             ),
                                     ) {

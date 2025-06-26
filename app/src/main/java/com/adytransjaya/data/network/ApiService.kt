@@ -5,12 +5,16 @@ import com.adytransjaya.data.model.DeliveryResponse
 import com.adytransjaya.data.model.DriverResponse
 import com.adytransjaya.data.model.LoginRequest
 import com.adytransjaya.data.model.LoginResponse
+import com.adytransjaya.data.model.UploadResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -48,4 +52,25 @@ interface ApiService {
         @Header("Authorization") auth: String,
         @Body request: DeliveryProgressRequest,
     ): Response<Unit>
+
+    @Multipart
+    @POST("delivery-progress/upload-pickup/{id}")
+    suspend fun uploadPickupPhoto(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part,
+    ): Response<UploadResponse>
+
+    @Multipart
+    @POST("delivery-progress/upload-delivery/{id}")
+    suspend fun uploadDeliveryPhoto(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part,
+    ): Response<UploadResponse>
+
+    @Multipart
+    @POST("delivery-progress/upload-signature/{id}")
+    suspend fun uploadSignature(
+        @Path("id") id: Int,
+        @Part photo: MultipartBody.Part,
+    ): Response<UploadResponse>
 }

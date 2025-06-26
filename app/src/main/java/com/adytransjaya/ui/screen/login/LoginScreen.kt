@@ -1,5 +1,6 @@
 package com.adytransjaya.ui.screen.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import com.adytransjaya.ui.components.login.loginButton
 import com.adytransjaya.ui.components.login.logoImage
 import com.adytransjaya.ui.components.login.passwordInput
 import com.adytransjaya.ui.components.login.usernameInput
+import com.adytransjaya.ui.theme.AppColors
 import helpText
 
 @Composable
@@ -51,6 +53,7 @@ fun loginScreen(
         modifier =
             Modifier
                 .fillMaxSize()
+                .background(AppColors.background)
                 .padding(40.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

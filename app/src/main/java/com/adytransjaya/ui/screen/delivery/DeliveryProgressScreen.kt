@@ -1,11 +1,21 @@
 package com.adytransjaya.ui.screen.delivery
 
 import DeliveryProgressCard
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -17,24 +27,25 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.adytransjaya.data.repository.DeliveryRepository
+import com.adytransjaya.ui.theme.AppColors
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun DeliveryProgressScreen(
     navController: NavController,
     deliveryViewModel: DeliveryViewModel,
+    repository: DeliveryRepository,
 ) {
     val delivery by deliveryViewModel.activeDelivery.collectAsState()
     val isLoading by deliveryViewModel.isLoading.collectAsState()
     val errorMessage by deliveryViewModel.errorMessage.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val showSnackbar =
@@ -80,8 +91,22 @@ fun DeliveryProgressScreen(
             modifier =
                 Modifier
                     .padding(it)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .background(AppColors.background),
         ) {
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier =
+                    Modifier
+                        .align(Alignment.TopStart)
+                        .padding(12.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Kembali",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                )
+            }
             when {
                 isLoading -> {
                     CircularProgressIndicator(
@@ -107,7 +132,27 @@ fun DeliveryProgressScreen(
                                 .padding(16.dp),
                         contentAlignment = Alignment.Center,
                     ) {
-                        DeliveryProgressCard(delivery = delivery!!)
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(5.dp),
+                        ) {
+                            item {
+                                DeliveryProgressCard(
+                                    delivery = delivery!!,
+                                    repository = repository,
+                                )
+                            }
+                            item {
+                                Button(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onClick = {},
+                                    shape = RoundedCornerShape(10.dp),
+                                    colors = ButtonDefaults.buttonColors(AppColors.BrandBlue),
+                                ) {
+                                    Text("Selesaikan Pengiriman")
+                                }
+                            }
+                        }
                     }
                 }
 
