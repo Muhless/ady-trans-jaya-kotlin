@@ -13,6 +13,7 @@ import androidx.core.net.toUri
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun UnderlinedClickableText(
+    label: String,
     pickupLat: Double? = null,
     pickupLng: Double? = null,
     deliveryLat: Double? = null,
@@ -22,7 +23,7 @@ fun UnderlinedClickableText(
     ClickableText(
         text =
             AnnotatedString(
-                "lihat lokasi",
+                label,
                 spanStyle =
                     SpanStyle(
                         color = Color.Blue,

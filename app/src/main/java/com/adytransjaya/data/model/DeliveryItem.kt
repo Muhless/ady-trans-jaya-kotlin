@@ -38,5 +38,6 @@ data class DeliveryItem(
     @Json(name = "delivery_cost")
     val deliveryCost: Int,
     val items: List<Item>,
-    val deliveryProgress: List<DeliveryProgress>,
+    @Json(name = "delivery_progress")
+    val deliveryProgress: List<DeliveryProgress>? = emptyList(),
 )

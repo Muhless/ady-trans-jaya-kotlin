@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adytransjaya.ui.components.splashScreen
 import com.adytransjaya.ui.navigation.bottomBar
+import com.adytransjaya.ui.screen.delivery.DeliveryProgressScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
 import com.adytransjaya.ui.screen.helpScreen
@@ -65,6 +66,10 @@ fun MainApp() {
             composable("delivery/{id}") {
                 val deliveryViewModel: DeliveryViewModel = hiltViewModel()
                 DeliveryScreen(navController, deliveryViewModel)
+            }
+            composable("delivery-progress/{id}") { backStackEntry ->
+                val deliveryViewModel: DeliveryViewModel = hiltViewModel()
+                DeliveryProgressScreen(navController, deliveryViewModel)
             }
 
             composable("profile") {

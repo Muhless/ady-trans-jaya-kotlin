@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -48,7 +47,6 @@ fun DeliveryScreen(
     var showDialog by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         deliveryViewModel.getActiveDelivery()
@@ -108,8 +106,8 @@ fun DeliveryScreen(
                             DeliveryDetailCard(delivery = delivery!!)
                         }
                         delivery?.let {
-                            if (it.deliveryStatus == "menunggu pengemudi") {
-                                item {
+                            item {
+                                if (it.deliveryStatus == "menunggu pengemudi") {
                                     Button(
                                         modifier =
                                             Modifier
@@ -124,6 +122,25 @@ fun DeliveryScreen(
                                         shape = RoundedCornerShape(10.dp),
                                     ) {
                                         Text("Mulai Pengiriman")
+                                    }
+                                } else if (it.deliveryStatus == "dalam pengiriman") {
+                                    Button(
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                                        onClick = {
+                                            delivery?.let {
+                                                navController.navigate("delivery-progress/${it.id}")
+                                            }
+                                        },
+                                        colors =
+                                            ButtonDefaults.buttonColors(
+                                                containerColor = AppColors.Success,
+                                                contentColor = AppColors.base,
+                                            ),
+                                    ) {
+                                        Text("Progress Pengiriman")
                                     }
                                 }
                             }
@@ -160,7 +177,7 @@ fun DeliveryScreen(
                                     snackbarHostState.showSnackbar(
                                         "Pengiriman dimulai, silahkan selesaikan pengiriman sebelum batas waktu yang ditentukan",
                                     )
-                                    navController.navigate("delivery_progress")
+                                    navController.navigate("delivery-progress/${it.id}")
                                 }
                             },
                         )

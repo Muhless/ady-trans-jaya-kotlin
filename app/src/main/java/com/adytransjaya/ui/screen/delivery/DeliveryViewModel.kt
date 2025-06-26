@@ -24,11 +24,13 @@ class DeliveryViewModel
 
         private val _deliveries = MutableStateFlow<List<DeliveryItem>>(emptyList())
         private val _activeDelivery = MutableStateFlow<DeliveryItem?>(null)
+        private val _selectedDelivery = MutableStateFlow<DeliveryItem?>(null)
         private val _isLoading = MutableStateFlow(false)
         private val _errorMessage = MutableStateFlow<String?>(null)
 
         val deliveries: StateFlow<List<DeliveryItem>> = _deliveries.asStateFlow()
         val activeDelivery: StateFlow<DeliveryItem?> = _activeDelivery.asStateFlow()
+        val selectedDelivery: StateFlow<DeliveryItem?> = _selectedDelivery.asStateFlow()
         val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
         val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
