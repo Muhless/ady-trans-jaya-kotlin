@@ -4,30 +4,27 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class DeliveryProgress(
-    val id: Int,
+data class DeliveryProgressRequest(
+    @Json(name = "delivery_id")
+    val deliveryId: Int,
     @Json(name = "delivery_start_time")
-    val deliveryStartTime: String,
+    val deliveryStartTime: String? = null,
     @Json(name = "pickup_time")
-    val pickupTime: String?,
+    val pickupTime: String? = null,
     @Json(name = "pickup_photo_url")
-    val pickupPhotoURL: String?,
+    val pickupPhotoUrl: String? = null,
     @Json(name = "arrival_time")
-    val arrivalTime: String?,
+    val arrivalTime: String? = null,
     @Json(name = "receiver_name")
-    val receiverName: String?,
+    val receiverName: String? = null,
     @Json(name = "receiver_phone")
-    val receiverPhone: String?,
+    val receiverPhone: String? = null,
     @Json(name = "received_at")
-    val receivedAt: String?,
+    val receivedAt: String? = null,
     @Json(name = "receiver_signature_url")
-    val receiverSignature: String?,
+    val receiverSignatureUrl: String? = null,
     @Json(name = "delivery_photo_url")
-    val deliveryPhotoURL: String?,
+    val deliveryPhotoUrl: String? = null,
     @Json(name = "delivery_end_time")
-    val deliveryEndTime: String?,
-    @Json(name = "created_at")
-    val createdAt: String?,
-    @Json(name = "updated_at")
-    val updatedAt: String?,
+    val deliveryEndTime: String? = null,
 )

@@ -1,5 +1,6 @@
 package com.adytransjaya.data.network
 
+import com.adytransjaya.data.model.DeliveryProgressRequest
 import com.adytransjaya.data.model.DeliveryResponse
 import com.adytransjaya.data.model.DriverResponse
 import com.adytransjaya.data.model.LoginRequest
@@ -40,5 +41,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") driverId: Int,
         @Body body: Map<String, String>,
+    ): Response<Unit>
+
+    @POST("delivery-progress")
+    suspend fun createDeliveryProgress(
+        @Header("Authorization") auth: String,
+        @Body request: DeliveryProgressRequest,
     ): Response<Unit>
 }

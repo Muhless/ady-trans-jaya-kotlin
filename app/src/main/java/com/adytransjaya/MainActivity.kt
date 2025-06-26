@@ -46,6 +46,7 @@ fun MainApp() {
     val currentRoute = navBackStackEntry?.destination?.route
     val loginViewModel: LoginViewModel = hiltViewModel()
     val isLoginOrSplash = currentRoute == "login" || currentRoute == "splash"
+    val deliveryViewModel: DeliveryViewModel = hiltViewModel()
 
     Scaffold(
         containerColor = if (isLoginOrSplash) Color.White else AppColors.background,
@@ -64,11 +65,9 @@ fun MainApp() {
             composable("login") { loginScreen(navController, loginViewModel) }
             composable("home") { homeScreen(navController, loginViewModel) }
             composable("delivery/{id}") {
-                val deliveryViewModel: DeliveryViewModel = hiltViewModel()
                 DeliveryScreen(navController, deliveryViewModel)
             }
-            composable("delivery-progress/{id}") { backStackEntry ->
-                val deliveryViewModel: DeliveryViewModel = hiltViewModel()
+            composable("delivery-progress") {
                 DeliveryProgressScreen(navController, deliveryViewModel)
             }
 

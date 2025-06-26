@@ -31,9 +31,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.adytransjaya.data.model.DeliveryProgressRequest
 import com.adytransjaya.ui.components.card.delivery.DeliveryDetailCard
 import com.adytransjaya.ui.theme.AppColors
-import kotlinx.coroutines.launch
+import com.adytransjaya.utils.getCurrentTimeInIsoFormat
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -130,9 +131,7 @@ fun DeliveryScreen(
                                                 .fillMaxWidth()
                                                 .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                         onClick = {
-                                            delivery?.let {
-                                                navController.navigate("delivery-progress/${it.id}")
-                                            }
+                                            navController.navigate("delivery-progress")
                                         },
                                         colors =
                                             ButtonDefaults.buttonColors(
@@ -169,18 +168,29 @@ fun DeliveryScreen(
                 onConfirm = {
                     showDialog = false
                     delivery?.let {
-                        deliveryViewModel.updateDelivery(
-                            it.id,
-                            "dalam pengiriman",
-                            onSuccess = {
-                                coroutineScope.launch {
-                                    snackbarHostState.showSnackbar(
-                                        "Pengiriman dimulai, silahkan selesaikan pengiriman sebelum batas waktu yang ditentukan",
+                        val startTime =
+                            getCurrentTimeInIsoFormat()
+                        val request =
+                            DeliveryProgressRequest(
+                                deliveryId = it.id,
+                                deliveryStartTime = startTime,
+                            )
+
+                        deliveryViewModel.createDeliveryProgress(request) {
+                            deliveryViewModel.updateDelivery(
+                                it.id,
+                                "dalam pengiriman",
+                                onSuccess = {
+                                    navController.navigate("delivery-progress") {
+                                        launchSingleTop = true
+                                    }
+                                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                                        "showSnackbarAfterNavigate",
+                                        true,
                                     )
-                                    navController.navigate("delivery-progress/${it.id}")
-                                }
-                            },
-                        )
+                                },
+                            )
+                        }
                     }
                 },
                 title = "Konfirmasi",

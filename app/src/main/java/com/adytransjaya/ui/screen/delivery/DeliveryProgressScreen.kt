@@ -1,19 +1,27 @@
 package com.adytransjaya.ui.screen.delivery
 
 import DeliveryProgressCard
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -23,67 +31,95 @@ fun DeliveryProgressScreen(
     navController: NavController,
     deliveryViewModel: DeliveryViewModel,
 ) {
-    val delivery by deliveryViewModel.selectedDelivery.collectAsState()
+    val delivery by deliveryViewModel.activeDelivery.collectAsState()
     val isLoading by deliveryViewModel.isLoading.collectAsState()
     val errorMessage by deliveryViewModel.errorMessage.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
-    when {
-        isLoading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val showSnackbar =
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.get<Boolean>("showSnackbarAfterNavigate") == true
+
+    LaunchedEffect(showSnackbar) {
+        if (showSnackbar) {
+            snackbarHostState.showSnackbar("Pengiriman dimulai, silahkan selesaikan pengiriman sebelum batas waktu yang ditentukan")
+            navController.currentBackStackEntry
+                ?.savedStateHandle
+                ?.set("showSnackbarAfterNavigate", false)
         }
+    }
 
-        errorMessage != null -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "Error: $errorMessage",
-                    modifier = Modifier.padding(16.dp),
-                )
+    LaunchedEffect(Unit) {
+        deliveryViewModel.getActiveDelivery()
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                snackbarHostState,
+                modifier = Modifier.padding(bottom = 20.dp),
+            ) { data ->
+                Snackbar(
+                    containerColor = Color(0xFFB9F6CA),
+                    contentColor = Color.Black,
+                ) {
+                    Text(
+                        text = data.visuals.message,
+                        modifier = Modifier.fillMaxWidth(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
-        }
+        },
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+        ) {
+            when {
+                isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
 
-        else -> {
-            delivery?.let { nonNullDelivery ->
-                val progressList = nonNullDelivery.deliveryProgress.orEmpty()
+                errorMessage != null -> {
+                    Text(
+                        text = "Error: $errorMessage",
+                        modifier =
+                            Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp),
+                    )
+                }
 
-                if (progressList.isNotEmpty()) {
-                    LazyColumn(
+                delivery != null -> {
+                    Box(
                         modifier =
                             Modifier
                                 .fillMaxSize()
                                 .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        items(progressList) { progress ->
-                            DeliveryProgressCard(progress = progress, delivery = nonNullDelivery)
-                        }
-                    }
-                } else {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text(
-                            text = "Belum ada progress pengiriman",
-                            modifier = Modifier.padding(16.dp),
-                        )
+                        DeliveryProgressCard(delivery = delivery!!)
                     }
                 }
-            } ?: Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "Data pengiriman tidak ditemukan",
-                    modifier = Modifier.padding(16.dp),
-                )
+
+                else -> {
+                    Text(
+                        text = "Data pengiriman tidak ditemukan",
+                        modifier =
+                            Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp),
+                    )
+                }
             }
         }
     }

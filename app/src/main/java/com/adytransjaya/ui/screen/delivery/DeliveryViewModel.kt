@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.adytransjaya.data.model.DeliveryItem
+import com.adytransjaya.data.model.DeliveryProgressRequest
 import com.adytransjaya.data.preference.UserPreference
 import com.adytransjaya.data.repository.DeliveryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -132,6 +133,37 @@ class DeliveryViewModel
                     }
                 } catch (e: Exception) {
                     _errorMessage.value = "Error: (${e.localizedMessage ?: "Terjadi kesalahan"}"
+                } finally {
+                    _isLoading.value = false
+                }
+            }
+        }
+
+        fun createDeliveryProgress(
+            request: DeliveryProgressRequest,
+            onSuccess: () -> Unit = {},
+        ) {
+            viewModelScope.launch {
+                _isLoading.value = true
+                _errorMessage.value = null
+
+                try {
+                    val token = UserPreference.getToken(context)
+                    if (token == null) {
+                        _errorMessage.value = "Token tidak tersedia"
+                        return@launch
+                    }
+
+                    val response = deliveryRepository.createDeliveryProgress("Bearer $token", request)
+
+                    if (response.isSuccessful) {
+                        onSuccess()
+                        getActiveDelivery()
+                    } else {
+                        _errorMessage.value = "Gagal membuat progress (${response.code()})"
+                    }
+                } catch (e: Exception) {
+                    _errorMessage.value = "Terjadi kesalahan: ${e.localizedMessage ?: "Unknown error"}"
                 } finally {
                     _isLoading.value = false
                 }
