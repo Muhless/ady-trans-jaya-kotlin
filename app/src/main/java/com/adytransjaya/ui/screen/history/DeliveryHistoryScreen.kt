@@ -4,16 +4,13 @@ import DeliveryHistoryCard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -33,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.adytransjaya.ui.components.common.StableSortDropdownMenuIcon
 import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
 import com.adytransjaya.ui.theme.AppColors
 
@@ -46,7 +44,6 @@ fun DeliveryHistoryScreen(
     val isLoading by deliveryViewModel.isLoading.collectAsState()
     val errorMessage by deliveryViewModel.errorMessage.collectAsState()
 
-    var showDialog by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val showSnackbar =
         navController.currentBackStackEntry
@@ -94,20 +91,6 @@ fun DeliveryHistoryScreen(
                     .fillMaxSize()
                     .background(AppColors.background),
         ) {
-            IconButton(
-                onClick = { navController.popBackStack() },
-                modifier =
-                    Modifier
-                        .align(Alignment.TopStart)
-                        .padding(12.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Kembali",
-                    tint = MaterialTheme.colorScheme.onBackground,
-                )
-            }
-
             when {
                 isLoading -> {
                     CircularProgressIndicator(
@@ -127,11 +110,33 @@ fun DeliveryHistoryScreen(
                 }
 
                 !deliveryHistories.isNullOrEmpty() -> {
+                    val sortOptions = listOf("Terbaru", "Terlama")
+                    var selectedSort by remember { mutableStateOf(sortOptions[0]) }
+
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Riwayat Pengiriman",
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                        StableSortDropdownMenuIcon(
+                            options = sortOptions,
+                            selectedOption = selectedSort,
+                            onOptionSelected = { selectedSort = it },
+                        )
+                    }
+
                     LazyColumn(
                         modifier =
                             Modifier
                                 .fillMaxSize()
-                                .padding(top = 56.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                                .padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(deliveryHistories) { delivery ->

@@ -1,7 +1,6 @@
 package com.adytransjaya.ui.screen.delivery
 
 import ConfirmationDialog
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -101,7 +100,6 @@ fun DeliveryScreen(
                 delivery != null -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
                     ) {
                         item {
                             DeliveryDetailCard(delivery = delivery!!)

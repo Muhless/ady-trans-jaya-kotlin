@@ -29,7 +29,7 @@ fun DeliveryDetailCard(delivery: DeliveryItem) {
                     .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text(text = "Detail Pengiriman", style = MaterialTheme.typography.titleLarge)
+            Text(text = "Pengiriman", style = MaterialTheme.typography.titleLarge)
 
             CustomerInfoCard(delivery = delivery)
             DeliveryInfoCard(delivery = delivery)

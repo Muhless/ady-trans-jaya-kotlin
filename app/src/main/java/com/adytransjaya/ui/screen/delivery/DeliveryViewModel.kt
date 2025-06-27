@@ -25,11 +25,13 @@ class DeliveryViewModel
 
         private val _activeDelivery = MutableStateFlow<DeliveryItem?>(null)
         private val _deliveryHistory = MutableStateFlow<List<DeliveryItem>>(emptyList())
+        private val _getDeliveryById = MutableStateFlow<DeliveryItem?>(null)
         private val _isLoading = MutableStateFlow(false)
         private val _errorMessage = MutableStateFlow<String?>(null)
 
         val activeDelivery: StateFlow<DeliveryItem?> = _activeDelivery.asStateFlow()
         val deliveryHistory: StateFlow<List<DeliveryItem>> = _deliveryHistory
+        val getDeliveryById: StateFlow<DeliveryItem?> = _getDeliveryById
         val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
         val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
 
@@ -147,6 +149,25 @@ class DeliveryViewModel
                     }
                 } catch (e: Exception) {
                     _errorMessage.value = "Error: ${e.localizedMessage ?: "Terjadi kesalahan"}"
+                } finally {
+                    _isLoading.value = false
+                }
+            }
+        }
+
+        fun getDeliveryById(id: Int) {
+            viewModelScope.launch {
+                _isLoading.value = true
+                try {
+                    val token = UserPreference.getToken(context) ?: return@launch
+                    val response = deliveryRepository.getDeliveryById("Bearer $token", id)
+                    if (response.isSuccessful) {
+                        _getDeliveryById.value = response.body()?.data
+                    } else {
+                        _errorMessage.value = "Gagal ambil data: ${response.code()}"
+                    }
+                } catch (e: Exception) {
+                    _errorMessage.value = "Error: ${e.localizedMessage}"
                 } finally {
                     _isLoading.value = false
                 }

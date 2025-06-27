@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,9 +21,9 @@ import com.adytransjaya.ui.components.splashScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryProgressScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
+import com.adytransjaya.ui.screen.delivery.detail.DeliveryDetailScreen
 import com.adytransjaya.ui.screen.helpScreen
 import com.adytransjaya.ui.screen.history.DeliveryHistoryScreen
-import com.adytransjaya.ui.screen.history.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
 import com.adytransjaya.ui.screen.login.LoginViewModel
 import com.adytransjaya.ui.screen.login.loginScreen
@@ -79,6 +80,20 @@ fun MainApp(repository: DeliveryRepository) {
             composable("delivery-history") {
                 DeliveryHistoryScreen(navController, deliveryViewModel)
             }
+            composable("delivery-detail/{id}") { backStackEntry ->
+                val deliveryId = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+
+                if (deliveryId != null) {
+                    DeliveryDetailScreen(
+                        deliveryId,
+                        deliveryViewModel,
+                        repository,
+                        navController,
+                    )
+                } else {
+                    Text("ID pengiriman tidak valid")
+                }
+            }
 
             composable("profile") {
                 profileScreen(
@@ -86,7 +101,6 @@ fun MainApp(repository: DeliveryRepository) {
                     loginViewModel,
                 )
             }
-            composable("history") { historyScreen(navController) }
             composable("help") { helpScreen(navController) }
         }
     }

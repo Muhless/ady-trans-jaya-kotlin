@@ -1,6 +1,7 @@
 package com.adytransjaya.data.repository
 
 import android.graphics.Bitmap
+import com.adytransjaya.data.model.DeliveryDetailResponse
 import com.adytransjaya.data.model.DeliveryProgressRequest
 import com.adytransjaya.data.model.DeliveryResponse
 import com.adytransjaya.data.network.ApiService
@@ -72,4 +73,9 @@ class DeliveryRepository
             token: String,
             driverId: Int,
         ): Response<DeliveryResponse> = apiService.getDeliveryHistory("Bearer $token", driverId)
+
+        suspend fun getDeliveryById(
+            token: String,
+            id: Int,
+        ): Response<DeliveryDetailResponse> = apiService.getDeliveryById("Bearer $token", id)
     }
