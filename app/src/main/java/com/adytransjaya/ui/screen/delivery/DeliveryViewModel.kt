@@ -23,60 +23,15 @@ class DeliveryViewModel
     ) : AndroidViewModel(application) {
         private val context = application.applicationContext
 
-        private val _deliveries = MutableStateFlow<List<DeliveryItem>>(emptyList())
         private val _activeDelivery = MutableStateFlow<DeliveryItem?>(null)
-        private val _selectedDelivery = MutableStateFlow<DeliveryItem?>(null)
+        private val _deliveryHistory = MutableStateFlow<List<DeliveryItem>>(emptyList())
         private val _isLoading = MutableStateFlow(false)
         private val _errorMessage = MutableStateFlow<String?>(null)
 
-        val deliveries: StateFlow<List<DeliveryItem>> = _deliveries.asStateFlow()
         val activeDelivery: StateFlow<DeliveryItem?> = _activeDelivery.asStateFlow()
-        val selectedDelivery: StateFlow<DeliveryItem?> = _selectedDelivery.asStateFlow()
+        val deliveryHistory: StateFlow<List<DeliveryItem>> = _deliveryHistory
         val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
         val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
-
-        fun getDeliveries() {
-            viewModelScope.launch {
-                _isLoading.value = true
-                _errorMessage.value = null
-
-                try {
-                    val token = UserPreference.getToken(context)
-                    val driverId = UserPreference.getDriverId(context)
-
-                    when {
-                        token == null -> {
-                            _errorMessage.value = "Token tidak tersedia"
-                            return@launch
-                        }
-
-                        driverId == null -> {
-                            _errorMessage.value = "Driver ID tidak tersedia"
-                            return@launch
-                        }
-
-                        else -> {
-                            val response = deliveryRepository.fetchDeliveries("Bearer $token", driverId)
-                            if (response.isSuccessful) {
-                                _deliveries.value = response.body()?.data ?: emptyList()
-                            } else {
-                                _errorMessage.value =
-                                    when (response.code()) {
-                                        401 -> "Unauthorized - Token tidak valid"
-                                        404 -> "Data tidak ditemukan"
-                                        500 -> "Server error"
-                                        else -> "Gagal ambil data: ${response.code()}"
-                                    }
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    _errorMessage.value = "Error: ${e.localizedMessage ?: "Terjadi kesalahan"}"
-                } finally {
-                    _isLoading.value = false
-                }
-            }
-        }
 
         fun getActiveDelivery() {
             viewModelScope.launch {
@@ -164,6 +119,34 @@ class DeliveryViewModel
                     }
                 } catch (e: Exception) {
                     _errorMessage.value = "Terjadi kesalahan: ${e.localizedMessage ?: "Unknown error"}"
+                } finally {
+                    _isLoading.value = false
+                }
+            }
+        }
+
+        fun getDeliveryHistory() {
+            viewModelScope.launch {
+                _isLoading.value = true
+                _errorMessage.value = null
+
+                try {
+                    val token = UserPreference.getToken(context)
+                    val driverId = UserPreference.getDriverId(context)
+
+                    if (token == null || driverId == null) {
+                        _errorMessage.value = "Token atau ID pengemudi tidak ditemukan"
+                        return@launch
+                    }
+
+                    val response = deliveryRepository.getDeliveryHistory("Bearer $token", driverId)
+                    if (response.isSuccessful) {
+                        _deliveryHistory.value = response.body()?.data ?: emptyList()
+                    } else {
+                        _errorMessage.value = "Gagal mengambil riwayat: ${response.code()}"
+                    }
+                } catch (e: Exception) {
+                    _errorMessage.value = "Error: ${e.localizedMessage ?: "Terjadi kesalahan"}"
                 } finally {
                     _isLoading.value = false
                 }

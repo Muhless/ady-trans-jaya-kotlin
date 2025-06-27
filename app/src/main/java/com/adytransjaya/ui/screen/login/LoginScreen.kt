@@ -53,7 +53,7 @@ fun loginScreen(
         modifier =
             Modifier
                 .fillMaxSize()
-                .background(AppColors.background)
+                .background(AppColors.base)
                 .padding(40.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

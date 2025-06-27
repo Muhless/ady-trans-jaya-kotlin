@@ -13,11 +13,6 @@ class DeliveryRepository
     constructor(
         private val apiService: ApiService,
     ) {
-        suspend fun fetchDeliveries(
-            token: String,
-            driverId: Int,
-        ): Response<DeliveryResponse> = apiService.getDeliveriesByDriverId("Bearer $token", driverId)
-
         suspend fun getActiveDelivery(
             token: String,
             driverId: Int,
@@ -73,20 +68,8 @@ class DeliveryRepository
                 Result.failure(e)
             }
 
-        suspend fun uploadSignature(
-            deliveryProgressId: Int,
-            bitmap: Bitmap,
-        ): Result<String> =
-            try {
-                val photoPart = PhotoUtils.bitmapToMultipart(bitmap, "photo")
-                val response = apiService.uploadSignature(deliveryProgressId, photoPart)
-
-                if (response.isSuccessful && response.body() != null) {
-                    Result.success(response.body()!!.url)
-                } else {
-                    Result.failure(Exception("Upload failed: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
+        suspend fun getDeliveryHistory(
+            token: String,
+            driverId: Int,
+        ): Response<DeliveryResponse> = apiService.getDeliveryHistory("Bearer $token", driverId)
     }

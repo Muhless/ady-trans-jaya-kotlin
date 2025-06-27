@@ -1,4 +1,3 @@
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,16 +14,19 @@ import com.adytransjaya.data.model.DeliveryItem
 import com.adytransjaya.data.repository.DeliveryRepository
 import com.adytransjaya.ui.components.Divider
 import com.adytransjaya.ui.components.card.delivery.DeliveryList
-import com.adytransjaya.ui.components.upload.UploadDeliveryPhotoButton
-import com.adytransjaya.ui.components.upload.UploadPickupPhotoButton
+import com.adytransjaya.ui.components.card.delivery.progress.ArrivalPhotoSection
+import com.adytransjaya.ui.components.card.delivery.progress.PickupPhotoSection
+import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
 import com.adytransjaya.ui.theme.AppColors
 import com.adytransjaya.utils.dateTimeFormatter
+import com.adytransjaya.utils.toFullUrl
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun DeliveryProgressCard(
     delivery: DeliveryItem,
     repository: DeliveryRepository,
+    viewModel: DeliveryViewModel,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -46,66 +48,37 @@ fun DeliveryProgressCard(
             val progress = delivery.deliveryProgress.firstOrNull()
             progress?.let {
                 DeliveryList(
-                    label = "Pengiriman Dimulai",
+                    label = "Mulai Pengiriman",
                     value = dateTimeFormatter(it.deliveryStartTime),
                 )
                 DeliveryList(
-                    label = "Barang Diambil",
+                    label = "Penjemputan Barang",
                     value = it.pickupTime?.let { dateTimeFormatter(it) } ?: "-",
                 )
-                if (it.pickupTime == null || it.pickupPhotoURL.isNullOrBlank()) {
-                    UploadPickupPhotoButton(
-                        deliveryProgressId = it.id,
-                        repository = repository,
-                        onSuccess = { photoUrl ->
-                            Log.d("Upload", "Pickup photo uploaded: $photoUrl")
-                            // Refresh data atau update UI state
-                        },
-                    )
-                }
-
-                DeliveryList(
-                    label = "Tiba di Lokasi",
-                    value = it.arrivalTime?.let { dateTimeFormatter(it) } ?: "-",
+                PickupPhotoSection(
+                    pickupPhotoURL = toFullUrl(it.pickupPhotoURL),
+                    deliveryProgressId = it.id,
+                    repository = repository,
+                    viewModel = viewModel,
                 )
 
+                if (it.pickupTime != null) {
+                    DeliveryList(
+                        label = "Tiba di Lokasi Tujuan",
+                        value = it.arrivalTime?.let { dateTimeFormatter(it) } ?: "-",
+                    )
+                    ArrivalPhotoSection(
+                        arrivalPhotoURL = toFullUrl(it.arrivalPhotoURL),
+                        deliveryProgressId = it.id,
+                        repository = repository,
+                        viewModel = viewModel,
+                    )
+                }
                 Divider()
-
                 DeliveryList(
-                    label = "Nama Penerima",
-                    value = if (it.receiverName.isNullOrBlank()) "-" else it.receiverName,
+                    label = "Batas Pengiriman",
+                    value = dateTimeFormatter(delivery.deliveryDeadlineDate),
                 )
-
-                DeliveryList(
-                    label = "No. Telepon Penerima",
-                    value = if (it.receiverPhone.isNullOrBlank()) "-" else it.receiverPhone,
-                )
-
-                DeliveryList(
-                    label = "Diterima Pada",
-                    value = it.receivedAt?.let { dateTimeFormatter(it) } ?: "-",
-                )
-
-//                if (it.receiverSignatureUrl.isBlank()) {
-//                    UploadSignatureButton(
-//                        deliveryProgressId = it.id,
-//                        repository = repository,
-//                        onSuccess = { photoUrl ->
-//                            Log.d("Upload", "Signature uploaded: $photoUrl")
-//                        }
-//                    )
-//                }
-
-                // Upload Delivery Photo Button
-                if (it.deliveryPhotoURL.orEmpty().isBlank()) {
-                    UploadDeliveryPhotoButton(
-                        deliveryProgressId = it.id,
-                        repository = repository,
-                        onSuccess = { photoUrl ->
-                            Log.d("Upload", "Delivery photo uploaded: $photoUrl")
-                        },
-                    )
-                }
             }
         }
     }

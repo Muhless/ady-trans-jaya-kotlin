@@ -1,9 +1,5 @@
-package com.adytransjaya.ui.navigation
-
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,10 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.adytransjaya.ui.navigation.BottomNavItem
 import com.adytransjaya.ui.theme.AppColors
 
+@Suppress("ktlint:standard:function-naming")
 @Composable
-fun bottomBar(navController: NavController) {
+fun BottomBar(navController: NavController) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
@@ -31,36 +29,41 @@ fun bottomBar(navController: NavController) {
             BottomNavItem.Delivery,
             BottomNavItem.History,
             BottomNavItem.Profile,
-            BottomNavItem.LogOut,
         )
 
     NavigationBar(
         modifier =
             Modifier
-                .padding(vertical = 4.dp)
-                .height(50.dp)
-                .background(Color.White),
-        containerColor = Color.Transparent,
-        tonalElevation = 4.dp,
+                .height(64.dp),
+        containerColor = Color.White,
+        tonalElevation = 8.dp,
     ) {
         items.forEach { item ->
             val selected = currentRoute == item.route
             NavigationBarItem(
                 selected = selected,
                 onClick = {
-                    if (!selected) navController.navigate(item.route)
+                    if (!selected) {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 },
                 icon = {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             imageVector = item.icon,
                             contentDescription = item.label,
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(24.dp),
                             tint = if (selected) AppColors.BrandBlue else Color(0xFF9CA3AF),
                         )
                         Text(
                             text = item.label,
-                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            style = MaterialTheme.typography.labelSmall,
                             color = if (selected) AppColors.BrandBlue else Color(0xFF9CA3AF),
                         )
                     }

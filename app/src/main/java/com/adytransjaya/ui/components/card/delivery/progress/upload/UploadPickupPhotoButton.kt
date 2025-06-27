@@ -1,5 +1,7 @@
 package com.adytransjaya.ui.components.upload
 
+import android.net.Uri
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,11 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import com.adytransjaya.data.repository.DeliveryRepository
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.launch
+import java.io.File
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Suppress("ktlint:standard:function-naming")
@@ -45,22 +49,23 @@ fun UploadPickupPhotoButton(
     var isUploading by remember { mutableStateOf(false) }
     val cameraPermission = rememberPermissionState(android.Manifest.permission.CAMERA)
 
+    val photoUri = remember { mutableStateOf<Uri?>(null) }
+
     val launcher =
         rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.TakePicturePreview(),
-        ) { bitmap ->
-            bitmap?.let {
+            contract = ActivityResultContracts.TakePicture(),
+        ) { success ->
+            if (success && photoUri.value != null) {
                 isUploading = true
                 coroutineScope.launch {
-                    repository.uploadPickupPhoto(deliveryProgressId, it).fold(
+                    val bitmap =
+                        MediaStore.Images.Media.getBitmap(context.contentResolver, photoUri.value)
+                    repository.uploadPickupPhoto(deliveryProgressId, bitmap).fold(
                         onSuccess = { photoUrl ->
                             isUploading = false
                             Toast
-                                .makeText(
-                                    context,
-                                    "Foto pickup berhasil diupload",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
+                                .makeText(context, "Foto berhasil diupload", Toast.LENGTH_SHORT)
+                                .show()
                             onSuccess?.invoke(photoUrl)
                         },
                         onFailure = { error ->
@@ -81,7 +86,15 @@ fun UploadPickupPhotoButton(
     Button(
         onClick = {
             if (cameraPermission.status.isGranted) {
-                launcher.launch(null)
+                val photoFile = File.createTempFile("pickup_", ".jpg", context.cacheDir)
+                val uri =
+                    FileProvider.getUriForFile(
+                        context,
+                        "${context.packageName}.fileprovider",
+                        photoFile,
+                    )
+                photoUri.value = uri
+                launcher.launch(uri)
             } else {
                 cameraPermission.launchPermissionRequest()
             }
@@ -94,17 +107,12 @@ fun UploadPickupPhotoButton(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(16.dp),
-                    strokeWidth = 2.dp,
-                )
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                 Text("Uploading...")
             }
         } else {
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center,
             ) {
                 Row(
@@ -112,11 +120,11 @@ fun UploadPickupPhotoButton(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
-                        imageVector = Icons.Default.CameraAlt,
+                        Icons.Default.CameraAlt,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
                     )
-                    Text("Foto Pickup")
+                    Text("Ambil Foto")
                 }
             }
         }

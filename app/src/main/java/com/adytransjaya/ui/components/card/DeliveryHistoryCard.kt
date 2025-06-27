@@ -1,75 +1,47 @@
-package com.adytransjaya.ui.components.card
-
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import com.adytransjaya.data.model.DeliveryItem
 import com.adytransjaya.ui.theme.AppColors
 
+@Suppress("ktlint:standard:function-naming")
 @Composable
-fun deliveryhHistoryCard(
-    status: String,
-    navController: NavController,
-    modifier: Modifier = Modifier,
+fun DeliveryHistoryCard(
+    delivery: DeliveryItem,
+    onClick: (DeliveryItem) -> Unit,
 ) {
     Card(
-        onClick = { navController.navigate("delivery_detail") },
         modifier =
             Modifier
-                .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                .fillMaxWidth()
+                .padding(vertical = 4.dp)
+                .clickable { onClick(delivery) },
+        elevation = CardDefaults.cardElevation(4.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = AppColors.card),
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 15.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = "kode invoice",
-                    fontSize = 17.sp,
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text =
-                        if (status.lowercase() == "dibatalkan") {
-                            "Dibatalkan pada\n 3 Juni 2025, 14:30 WIB"
-                        } else {
-                            "Diselesaikan pada\n 3 Juni 2025, 14:30 WIB"
-                        },
-                    fontSize = 12.sp,
-                    color = Color.Gray,
-                )
-            }
-            val statusColor =
-                when (status.lowercase()) {
-                    "selesai" -> AppColors.Success
-                    "dibatalkan" -> AppColors.Danger
-                    else -> Color.Black
-                }
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = status.replaceFirstChar { it.uppercase() },
-                color = statusColor,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
+                text = "Kode Pengiriman: ${delivery.deliveryCode}",
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = "Tujuan: ${delivery.destinationAddress}",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text(
+                text = "Status: ${delivery.deliveryStatus.replaceFirstChar { it.uppercase() }}",
+                style = MaterialTheme.typography.bodySmall,
+                color = AppColors.BrandBlue,
             )
         }
     }

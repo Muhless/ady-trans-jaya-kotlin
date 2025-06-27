@@ -1,5 +1,6 @@
 package com.adytransjaya
 
+import BottomBar
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,11 +17,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.adytransjaya.data.repository.DeliveryRepository
 import com.adytransjaya.ui.components.splashScreen
-import com.adytransjaya.ui.navigation.bottomBar
 import com.adytransjaya.ui.screen.delivery.DeliveryProgressScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryScreen
 import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
 import com.adytransjaya.ui.screen.helpScreen
+import com.adytransjaya.ui.screen.history.DeliveryHistoryScreen
 import com.adytransjaya.ui.screen.history.historyScreen
 import com.adytransjaya.ui.screen.homeScreen
 import com.adytransjaya.ui.screen.login.LoginViewModel
@@ -57,7 +58,7 @@ fun MainApp(repository: DeliveryRepository) {
         containerColor = if (isLoginOrSplash) Color.White else AppColors.background,
         bottomBar = {
             if (currentRoute != "login" && currentRoute != "splash") {
-                bottomBar(navController)
+                BottomBar(navController)
             }
         },
     ) { innerPadding ->
@@ -74,6 +75,9 @@ fun MainApp(repository: DeliveryRepository) {
             }
             composable("delivery-progress") {
                 DeliveryProgressScreen(navController, deliveryViewModel, repository)
+            }
+            composable("delivery-history") {
+                DeliveryHistoryScreen(navController, deliveryViewModel)
             }
 
             composable("profile") {

@@ -14,18 +14,8 @@ data class DeliveryProgress(
     val pickupPhotoURL: String?,
     @Json(name = "arrival_time")
     val arrivalTime: String?,
-    @Json(name = "receiver_name")
-    val receiverName: String?,
-    @Json(name = "receiver_phone")
-    val receiverPhone: String?,
-    @Json(name = "received_at")
-    val receivedAt: String?,
-    @Json(name = "receiver_signature_url")
-    val receiverSignature: String?,
-    @Json(name = "delivery_photo_url")
-    val deliveryPhotoURL: String?,
-    @Json(name = "delivery_end_time")
-    val deliveryEndTime: String?,
+    @Json(name = "arrival_photo_url")
+    val arrivalPhotoURL: String?,
     @Json(name = "created_at")
     val createdAt: String?,
     @Json(name = "updated_at")

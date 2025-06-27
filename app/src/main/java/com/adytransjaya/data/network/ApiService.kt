@@ -28,12 +28,6 @@ interface ApiService {
         @Path("username") username: String,
     ): Response<DriverResponse>
 
-    @GET("deliveries/driver/{driverId}")
-    suspend fun getDeliveriesByDriverId(
-        @Header("Authorization") token: String,
-        @Path("driverId") driverId: Int,
-    ): Response<DeliveryResponse>
-
     @GET("delivery/driver/{id}/active")
     suspend fun getActiveDelivery(
         @Header("Authorization") token: String,
@@ -67,10 +61,9 @@ interface ApiService {
         @Part photo: MultipartBody.Part,
     ): Response<UploadResponse>
 
-    @Multipart
-    @POST("delivery-progress/upload-signature/{id}")
-    suspend fun uploadSignature(
-        @Path("id") id: Int,
-        @Part photo: MultipartBody.Part,
-    ): Response<UploadResponse>
+    @GET("delivery/driver/{id}/history")
+    suspend fun getDeliveryHistory(
+        @Header("Authorization") token: String,
+        @Path("id") driverId: Int,
+    ): Response<DeliveryResponse>
 }

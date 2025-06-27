@@ -1,7 +1,6 @@
-package com.adytransjaya.ui.screen.delivery
+package com.adytransjaya.ui.screen.history
 
-import ConfirmationDialog
-import DeliveryProgressCard
+import DeliveryHistoryCard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,11 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,17 +33,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.adytransjaya.data.repository.DeliveryRepository
+import com.adytransjaya.ui.screen.delivery.DeliveryViewModel
 import com.adytransjaya.ui.theme.AppColors
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun DeliveryProgressScreen(
+fun DeliveryHistoryScreen(
     navController: NavController,
     deliveryViewModel: DeliveryViewModel,
-    repository: DeliveryRepository,
 ) {
-    val delivery by deliveryViewModel.activeDelivery.collectAsState()
+    val deliveryHistories by deliveryViewModel.deliveryHistory.collectAsState()
     val isLoading by deliveryViewModel.isLoading.collectAsState()
     val errorMessage by deliveryViewModel.errorMessage.collectAsState()
 
@@ -59,7 +55,7 @@ fun DeliveryProgressScreen(
 
     LaunchedEffect(showSnackbar) {
         if (showSnackbar) {
-            snackbarHostState.showSnackbar("Pengiriman dimulai, silahkan selesaikan pengiriman sebelum batas waktu yang ditentukan")
+            snackbarHostState.showSnackbar("Pengiriman diselesaikan")
             navController.currentBackStackEntry
                 ?.savedStateHandle
                 ?.set("showSnackbarAfterNavigate", false)
@@ -67,7 +63,7 @@ fun DeliveryProgressScreen(
     }
 
     LaunchedEffect(Unit) {
-        deliveryViewModel.getActiveDelivery()
+        deliveryViewModel.getDeliveryHistory()
     }
 
     Scaffold(
@@ -90,11 +86,11 @@ fun DeliveryProgressScreen(
                 }
             }
         },
-    ) {
+    ) { paddingValues ->
         Box(
             modifier =
                 Modifier
-                    .padding(it)
+                    .padding(paddingValues)
                     .fillMaxSize()
                     .background(AppColors.background),
         ) {
@@ -111,6 +107,7 @@ fun DeliveryProgressScreen(
                     tint = MaterialTheme.colorScheme.onBackground,
                 )
             }
+
             when {
                 isLoading -> {
                     CircularProgressIndicator(
@@ -125,44 +122,25 @@ fun DeliveryProgressScreen(
                             Modifier
                                 .align(Alignment.Center)
                                 .padding(16.dp),
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
 
-                delivery != null -> {
-                    Box(
+                !deliveryHistories.isNullOrEmpty() -> {
+                    LazyColumn(
                         modifier =
                             Modifier
                                 .fillMaxSize()
-                                .padding(16.dp),
-                        contentAlignment = Alignment.Center,
+                                .padding(top = 56.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            item {
-                                DeliveryProgressCard(
-                                    delivery = delivery!!,
-                                    viewModel = deliveryViewModel,
-                                    repository = repository,
-                                )
-                            }
-                            val progress = delivery?.deliveryProgress?.firstOrNull()
-                            val isProgressComplete =
-                                progress?.pickupTime != null && progress.arrivalTime != null
-
-                            if (isProgressComplete) {
-                                item {
-                                    Button(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        onClick = { showDialog = true },
-                                        shape = RoundedCornerShape(10.dp),
-                                        colors = ButtonDefaults.buttonColors(AppColors.BrandBlue),
-                                    ) {
-                                        Text("Selesaikan Pengiriman")
-                                    }
-                                }
-                            }
+                        items(deliveryHistories) { delivery ->
+                            DeliveryHistoryCard(
+                                delivery = delivery,
+                                onClick = {
+                                    navController.navigate("delivery-detail/${delivery.id}")
+                                },
+                            )
                         }
                     }
                 }
@@ -174,36 +152,10 @@ fun DeliveryProgressScreen(
                             Modifier
                                 .align(Alignment.Center)
                                 .padding(16.dp),
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
-        }
-        if (showDialog) {
-            ConfirmationDialog(
-                showDialog = showDialog,
-                onDismiss = { showDialog = false },
-                onConfirm = {
-                    showDialog = false
-                    delivery?.let {
-                        deliveryViewModel.updateDelivery(
-                            it.id,
-                            "selesai",
-                            onSuccess = {
-                                deliveryViewModel.getActiveDelivery()
-                                navController.navigate("delivery-history") {
-                                    launchSingleTop = true
-                                }
-                                navController.currentBackStackEntry?.savedStateHandle?.set(
-                                    "showSnackbarAfterNavigate",
-                                    true,
-                                )
-                            },
-                        )
-                    }
-                },
-                title = "Konfirmasi",
-                message = "Apakah Anda yakin ingin menyelesaikan pengiriman ini?",
-            )
         }
     }
 }
