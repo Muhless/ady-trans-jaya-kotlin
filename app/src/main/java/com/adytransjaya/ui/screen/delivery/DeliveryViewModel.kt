@@ -54,8 +54,6 @@ class DeliveryViewModel
                         val delivery = response.body()?.data?.firstOrNull()
                         if (delivery != null) {
                             _activeDelivery.value = delivery
-                        } else {
-                            _errorMessage.value = "Tidak ada pengiriman aktif"
                         }
                     } else {
                         _errorMessage.value = "Gagal ambil data (${response.code()})"

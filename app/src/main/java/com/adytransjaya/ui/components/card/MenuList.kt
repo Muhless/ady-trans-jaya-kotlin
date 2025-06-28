@@ -38,12 +38,12 @@ fun MenuList(navController: NavController) {
         ) {
             MenuCard(
                 image = R.drawable.icon_location,
-                onClick = { navController.navigate("delivery") },
+                onClick = { navController.navigate("delivery/{id}") },
                 modifier = Modifier.size(60.dp),
             )
             MenuCard(
                 image = R.drawable.icon_search,
-                onClick = { navController.navigate("history") },
+                onClick = { navController.navigate("delivery-history") },
                 modifier = Modifier.size(60.dp),
             )
             MenuCard(

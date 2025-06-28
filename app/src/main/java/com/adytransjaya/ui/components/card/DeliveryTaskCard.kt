@@ -121,7 +121,7 @@ private fun EmptyState() {
                 .fillMaxSize(),
     ) {
         Image(
-            painter = painterResource(id = R.drawable.image_delivery4),
+            painter = painterResource(id = R.drawable.image_bg_task),
             contentDescription = "delivery task background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),

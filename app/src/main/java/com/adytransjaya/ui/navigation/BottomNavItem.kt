@@ -1,6 +1,7 @@
 package com.adytransjaya.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalShipping
@@ -19,4 +20,6 @@ sealed class BottomNavItem(
     object History : BottomNavItem("delivery-history", "Riwayat", Icons.Default.History)
 
     object Profile : BottomNavItem("profile", "Profil", Icons.Default.Person)
+
+    object Help : BottomNavItem("help", "Bantuan", Icons.Default.Help)
 }

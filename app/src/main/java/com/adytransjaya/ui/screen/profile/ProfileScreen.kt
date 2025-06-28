@@ -149,8 +149,7 @@ fun profileScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
             colors = CardDefaults.cardColors(Color.White),
-            elevation = CardDefaults.cardElevation(4.dp),
-            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(2.dp),
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
