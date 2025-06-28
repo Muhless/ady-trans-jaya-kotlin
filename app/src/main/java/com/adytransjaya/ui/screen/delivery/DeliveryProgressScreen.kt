@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -156,7 +155,6 @@ fun DeliveryProgressScreen(
                                     Button(
                                         modifier = Modifier.fillMaxWidth(),
                                         onClick = { showDialog = true },
-                                        shape = RoundedCornerShape(10.dp),
                                         colors = ButtonDefaults.buttonColors(AppColors.BrandBlue),
                                     ) {
                                         Text("Selesaikan Pengiriman")

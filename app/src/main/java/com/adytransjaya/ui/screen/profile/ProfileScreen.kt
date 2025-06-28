@@ -1,5 +1,7 @@
 package com.adytransjaya.ui.screen.profile
 
+import ConfirmationDialog
+import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,19 +18,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,14 +35,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.adytransjaya.R
-import com.adytransjaya.ui.components.profile.profileCard
+import com.adytransjaya.ui.components.profile.ProfilInfoCard
 import com.adytransjaya.ui.components.profile.settingButton
 import com.adytransjaya.ui.screen.login.LoginViewModel
 import com.adytransjaya.ui.theme.AppColors
@@ -60,7 +56,9 @@ fun profileScreen(
     loginViewModel: LoginViewModel,
 ) {
     val driver by loginViewModel.driver
-    var showEditDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val activity = context as? Activity
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(driver) {
         Log.d("ProfileScreen", "Driver in ProfileScreen: $driver")
@@ -143,47 +141,7 @@ fun profileScreen(
             }
         }
 
-        Card(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-            colors = CardDefaults.cardColors(Color.White),
-            elevation = CardDefaults.cardElevation(4.dp),
-            shape = RoundedCornerShape(16.dp),
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-            ) {
-                Text(
-                    text = "Informasi Personal",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = AppColors.BrandBlueDark,
-                    modifier = Modifier.padding(bottom = 16.dp),
-                )
-                profileCard(
-                    icon = Icons.Default.AccountCircle,
-                    label = "Username",
-                    value = driver?.username ?: "Tidak tersedia",
-                )
-                profileCard(
-                    icon = Icons.Default.Person,
-                    label = "Nama Lengkap",
-                    value = driver?.name ?: "Tidak tersedia",
-                )
-                profileCard(
-                    icon = Icons.Default.Phone,
-                    label = "Nomor Telepon",
-                    value = driver?.phone ?: "Tidak tersedia",
-                )
-                profileCard(
-                    icon = Icons.Default.LocationOn,
-                    label = "Alamat",
-                    value = driver?.address ?: "Tidak tersedia",
-                )
-            }
-        }
+        ProfilInfoCard(driver!!)
 
         Card(
             modifier =
@@ -204,48 +162,34 @@ fun profileScreen(
                     color = AppColors.BrandBlueDark,
                     modifier = Modifier.padding(bottom = 16.dp),
                 )
+                com.adytransjaya.ui.components
+                    .Divider()
 
                 settingButton(
-                    icon = Icons.Default.Edit,
-                    text = "Ubah Profil",
-                    onClick = { showEditDialog = true },
-                )
-
-                settingButton(
-                    icon = Icons.Default.Lock,
-                    text = "Ubah Password",
-                    onClick = { /* Navigate to change password */ },
-                )
-
-                Divider(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    color = Color.Gray.copy(alpha = 0.3f),
+                    icon = Icons.Default.Logout,
+                    text = "Keluar",
+                    onClick = {
+                        showDialog = true
+                    },
                 )
             }
         }
+        if (showDialog) {
+            val context = LocalContext.current
+            val activity = context as? Activity
 
-        Spacer(modifier = Modifier.height(20.dp))
-    }
-
-    if (showEditDialog) {
-        AlertDialog(
-            onDismissRequest = { showEditDialog = false },
-            title = {
-                Text(
-                    text = "Edit Profile",
-                    fontWeight = FontWeight.Bold,
-                )
-            },
-            text = {
-                Text("Fitur edit profile akan segera tersedia.")
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = { showEditDialog = false },
-                ) {
-                    Text("OK")
-                }
-            },
-        )
+            ConfirmationDialog(
+                showDialog = showDialog,
+                onDismiss = { showDialog = false },
+                onConfirm = {
+                    showDialog = false
+                    activity?.let {
+                        ActivityCompat.finishAffinity(it)
+                    }
+                },
+                title = "Konfirmasi",
+                message = "Apakah Anda yakin ingin keluar dari aplikasi ?",
+            )
+        }
     }
 }

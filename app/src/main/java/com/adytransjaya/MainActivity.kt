@@ -70,7 +70,7 @@ fun MainApp(repository: DeliveryRepository) {
         ) {
             composable("splash") { splashScreen(navController) }
             composable("login") { loginScreen(navController, loginViewModel) }
-            composable("home") { homeScreen(navController, loginViewModel) }
+            composable("home") { homeScreen(navController, loginViewModel, deliveryViewModel) }
             composable("delivery/{id}") {
                 DeliveryScreen(navController, deliveryViewModel)
             }

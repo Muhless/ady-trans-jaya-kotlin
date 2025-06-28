@@ -27,6 +27,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            debug {
+                buildConfigField("String", "BASE_URL", "\"http://192.168.209.229:8080/api/\"")
+            }
         }
     }
     compileOptions {
@@ -38,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

@@ -35,7 +35,6 @@ fun DeliveryHistoryCard(
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp)
-//                .clip(RoundedCornerShape(12.dp))
                 .clickable { onClick(delivery) },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = AppColors.card),

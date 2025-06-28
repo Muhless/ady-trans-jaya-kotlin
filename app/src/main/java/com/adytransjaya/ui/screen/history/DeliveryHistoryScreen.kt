@@ -137,7 +137,7 @@ fun DeliveryHistoryScreen(
                             Modifier
                                 .fillMaxSize()
                                 .padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                     ) {
                         items(deliveryHistories) { delivery ->
                             DeliveryHistoryCard(

@@ -49,7 +49,7 @@ fun DeliveryDetailScreen(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                                .padding(vertical = 4.dp, horizontal = 16.dp),
                     ) {
                         BackButton(
                             onBackClick = { navController.popBackStack() },
